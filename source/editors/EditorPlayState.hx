@@ -41,9 +41,9 @@ class EditorPlayState extends MusicBeatState
 	var startOffset:Float = 0;
 	var startPos:Float = 0;
 
-	var songMania:Int = 3;
+	var songMania:Int = 0;
 
-	public function new(startPos:Float, songMania:Int = 3) {
+	public function new(startPos:Float, songMania:Int = 0) {
 		this.startPos = startPos;
 		this.songMania = songMania;
 		Conductor.songPosition = startPos - startOffset;

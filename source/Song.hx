@@ -83,11 +83,11 @@ class Song
 			}
 		}
 
-                /*
-                if (songJson.mania == null) //yall better not replace this
-                {
-                        songJson.mania = Note.defaultMania;
-                }*/
+                
+        if (songJson.mania == null) //yall better not replace this
+            {
+                songJson.mania = Note.defaultMania;
+            }
 	}
 
 	public function new(song, notes, bpm)
