@@ -240,7 +240,7 @@ class FunkinLua {
 				}
 				return;
 			}
-			luaTrace("Script doesn't exist!");
+			luaTrace("Script doesn't exist! " + cervix);
 		});
 
 		//stuff 4 noobz like you B)
