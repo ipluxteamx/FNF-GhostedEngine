@@ -1040,8 +1040,8 @@ class PlayState extends MusicBeatState
 		add(iconP1);
 		add(iconP2);
 
-		watermarkTxt = new FlxText(5, healthBarBG.y + 48, FlxG.width, "Ghosted Engine 0.1 - " + SONG.song + ": " + storyDifficulty, 18);
-		watermarkTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		watermarkTxt = new FlxText(15, healthBarBG.y + 40, FlxG.width, "Ghosted Engine 0.1 - " + SONG.song + ": " + storyDifficulty, 16);
+		watermarkTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		watermarkTxt.scrollFactor.set();
 		watermarkTxt.borderSize = 1.25;
 		watermarkTxt.visible = !ClientPrefs.hideHud;
