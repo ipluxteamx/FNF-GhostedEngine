@@ -33,6 +33,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxGradient;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
@@ -59,10 +60,13 @@ class TitleState extends MusicBeatState
 	public static var initialized:Bool = false;
 
 	var blackScreen:FlxSprite;
+	var gradientBar:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, 1, 0xFF0F5FFF);
 	var credGroup:FlxGroup;
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+
+	var Timer:Float = 0;
 
 	var curWacky:Array<String> = [];
 
@@ -416,6 +420,11 @@ class TitleState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
+		Timer += 1;
+		gradientBar.scale.y += Math.sin(Timer / 10) * 0.001;
+		gradientBar.updateHitbox();
+		gradientBar.y = FlxG.height - gradientBar.height;
+
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		#if mobile
@@ -653,6 +662,14 @@ class TitleState extends MusicBeatState
 		if (!skippedIntro)
 		{
 			remove(ngSpr);
+
+			gradientBar = FlxGradient.createGradientFlxSprite(Math.round(FlxG.width), 512, [0x00, 0x553D0468, 0xAA0F5FFF], 1, 90, true);
+	    	gradientBar.y = FlxG.height - gradientBar.height;
+	     	gradientBar.scale.y = 0;
+			gradientBar.alpha = 0.5;
+	    	gradientBar.updateHitbox();
+	    	add(gradientBar);
+	     	FlxTween.tween(gradientBar, {'scale.y': 1.3}, 4, {ease: FlxEase.quadInOut});
 
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
