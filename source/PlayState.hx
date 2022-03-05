@@ -241,7 +241,7 @@ class PlayState extends MusicBeatState
 	public var songMisses:Int = 0;
 
 	public var scoreTxt:FlxText;
-	public var scoreBar:FlxSprite;
+	public var scoreBarBG:AttachedSprite;
 
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
@@ -1002,7 +1002,6 @@ class PlayState extends MusicBeatState
 		healthBarBG.visible = !ClientPrefs.hideHud;
 		healthBarBG.xAdd = -4;
 		healthBarBG.yAdd = -4;
-		add(healthBarBG);
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
@@ -1011,25 +1010,33 @@ class PlayState extends MusicBeatState
 		// healthBar
 		healthBar.visible = !ClientPrefs.hideHud;
 		healthBar.alpha = ClientPrefs.healthBarAlpha;
-		add(healthBar);
 		healthBarBG.sprTracker = healthBar;
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
 		iconP1.visible = !ClientPrefs.hideHud;
 		iconP1.alpha = ClientPrefs.healthBarAlpha;
-		add(iconP1);
 
 		iconP2 = new HealthIcon(dad.healthIcon, false);
 		iconP2.y = healthBar.y - 75;
 		iconP2.visible = !ClientPrefs.hideHud;
 		iconP2.alpha = ClientPrefs.healthBarAlpha;
-		add(iconP2);
 		reloadHealthBarColors();
 
-		scoreBar = new FlxSprite(0, healthBarBG.y + 32).loadGraphic(Util.getImage('scoreBar'));
-		scoreBar.setGraphicSize(Std.int(scoreBar.width), Std.int(scoreBar.height) - 10);
-		add(scoreBar);
+		scoreBarBG = new AttachedSprite('scoreBar');
+		scoreBarBG.y = healthBarBG.y + 30;
+		scoreBarBG.screenCenter(X);
+		scoreBarBG.setGraphicSize(Std.int(scoreBarBG.width), Std.int(scoreBarBG.height) - 5);
+		scoreBarBG.scrollFactor.set();
+		scoreBarBG.visible = !ClientPrefs.hideHud;
+		scoreBarBG.alpha = 0.5;
+		add(scoreBarBG);
+		if(ClientPrefs.downScroll) scoreBarBG.y = healthBarBG.y - 30;
+
+		add(healthBarBG);
+		add(healthBar);
+		add(iconP1);
+		add(iconP2);
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1055,7 +1062,7 @@ class PlayState extends MusicBeatState
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
-		scoreBar.cameras = [camHUD];
+		scoreBarBG.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
@@ -3539,8 +3546,8 @@ class PlayState extends MusicBeatState
 				if(scoreTxtTween != null) {
 					scoreTxtTween.cancel();
 				}
-				scoreTxt.scale.x = 1.075;
-				scoreTxt.scale.y = 1.075;
+				scoreTxt.scale.x = 1.05;
+				scoreTxt.scale.y = 1.05;
 				scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
 					onComplete: function(twn:FlxTween) {
 						scoreTxtTween = null;
