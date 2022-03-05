@@ -152,6 +152,11 @@ class FreeplayState extends MusicBeatState
 			lastDifficultyName = CoolUtil.defaultDifficulty;
 		}
 		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
+
+		if(curPlaying)
+		{
+			iconArray[instPlaying].canBounce = true;
+		}
 		
 		changeSelection();
 		changeDiff();
@@ -220,7 +225,7 @@ class FreeplayState extends MusicBeatState
 		}
 	}*/
 
-	var instPlaying:Int = -1;
+	public static var instPlaying:Int = -1;
 	private static var vocals:FlxSound = null;
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
@@ -254,8 +259,6 @@ class FreeplayState extends MusicBeatState
 
 		scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' + ratingSplit.join('.') + '%)';
 		positionHighscore();
-
-		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
@@ -334,8 +337,12 @@ class FreeplayState extends MusicBeatState
 				vocals.persist = true;
 				vocals.looped = true;
 				vocals.volume = 0.7;
-				Conductor.changeBPM(PlayState.SONG.bpm);
 				instPlaying = curSelected;
+				Conductor.changeBPM(PlayState.SONG.bpm);
+				for (i in 0...iconArray.length)
+					iconArray[i].canBounce = false;
+				iconArray[instPlaying].canBounce = true;
+				curPlaying = true;
 				#end
 			}
 		}
@@ -386,8 +393,8 @@ class FreeplayState extends MusicBeatState
 	override function beatHit() {
 		super.beatHit();
 
-		if (FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 1 == 0)
-			FlxG.camera.zoom += 0.015;
+		if (curPlaying)
+			iconArray[instPlaying].bounce();
 	}
 
 	public static function destroyFreeplayVocals() {
