@@ -4811,3 +4811,103 @@ class PlayState extends MusicBeatState
 	var curLight:Int = 0;
 	var curLightEvent:Int = 0;
 }
+
+/*                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                 .......°°°°°°°°°°°°°°....       °                                                                      
+                                                                                 ...°°°***ooooooooOOOOOOOOOOOOOOOOOOOOOOOOooo*°.                                                                        
+                                                                o      ..°**oooooOOOOOOOOooooooooooooooooooooooooooooooooooooOOOo*.                                                                     
+                                                                  .°*ooOOOOOoooooooooooooooooooooooooooooooooooooooooooooooooooooOo*                                                                    
+                                                                °oOOOooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooOo°                                                                  
+                                                              .oOooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooO°                                                                 
+                                                              ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo                                                                 
+                                                             °Ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo.                                                                
+                                                          *  *ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo                                                                 
+                                                          *  *oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooO°                                                                 
+                                                             *OoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooO*                                                                  
+                                                             .ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooOOoooooooO*                                                                   
+                                                              °Oooooooooooooooooooooooooooooooooooooooooooooooooooooooooo°°°****ooo*                                                                    
+                                                               °OooOOoooooooooooooooooooooooooooooooooooooooooooooooooooo°.                                                                             
+                                                             °  .o**°...     *ooooooooooooooooooooooooooooooooooooooooooooooooo****°°°..                                                                
+                                                           *         ..°°°***ooooooooooooooooooooooooooooooooooooooooooooooooooooOOOOOOOoo°                                                             
+                                                             ..°**ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooOo.                                                           
+                                                           °oOOOOoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo                                                           
+                                                          .Oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo.                                                          
+                                                          *ooooooooooooooooooooooooooooooooooooooooOOOOOOOOOOOOOOOoooooooooooooooooooooooooOo                                                           
+                                                          *oooooooooooooooooooooooooOOOOOOOOooooooo***************oooooOOOOOOOOOOOooooooOOo*                                                            
+                                                          °OoooooooooooooooOOOOOoooo**°°......  .  ......°°°°°°°...   ....°°°°****oooooo*°                                                              
+                                                           oOoooooooOOOOooo*°°.   ...°*oOO#O °#@o o@@@@@@@@@@@@@@@@@# .Oo***°°°...                                                                      
+                                                            *oooooo**°...  .°oO@@@@@@@@@@@@@ °@@ .@@@@@@@@@@@@@@@@@@@° @@@@@@@@@@@O     *                                                               
+                                                                      * .@@@@@@@@@@@@@@@@@@# O@o @@@@*.o@@@@@@@@@@@@@# O@@@@@@@@@@@*                                                                    
+                                                                     O@. @@   @@@@@@@@@@@@@ .@@ .@@@#  °@@@@@@@@@@@@@@ #@@@@@@@@@@@@.                                                                   
+                                                                    .@@# o@@O@@@@@@@@@@@@@ .@@@ °@@@@@@@@@@@@@@@@@@@@  @@@@@@@@@@@@@#  .                                                                
+                                                                    #@@@o °@@@@@@@@@@@@@o *@@@@* o@@@@@@@@@@@@@@@@@O .@@@@@@@@@@@@@@@*                                                                  
+                                                                   °@@@@@@o..°o#@@@@#o° .#@@@@@@#° .*o#@@@@@@@@O*. .O@@@@@@@@@@@@@@@@@                                                                  
+                                                                   #@@@@@#@@#o*°°****o#@@@@@@@@@@@@@#o**°°°°°°*oO@@@@@@@@@@@@@@@@@@@@@.                                                                 
+                                                                .  @@@@@#°..°°°°°..°°*°°°*****oooooOOOOOOOOOooooooo****°°.@@@@@@@@@@@@.                                                                 
+                                                                .  @@@@@@@@@@@@@@O    ....                               o@@@@@@@@@@@#  *                                                               
+                                                                   O@@@@@@@@@@@@@@@@*   .°°°°°°°°°..         .....   .*#@@@@@@@@@@@@@.                                                                  
+                                                                    O@@@@@@@@@@@@@@@@@#°    ....    ......      .°o#@@@@@@@@@@@@@@@@°                                                                   
+                                                                     °#@@@@@@@@@@@@@@@@@@#o*°.     .....°°°*o#@@@@@@@@@@@@@@@@@@Oo°                                                                     
+                                                                        *#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#o*°                                                                          
+                                                                      .    .*o#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#Ooo*°.                                                                                
+                                                                         @         ..°°°°°°*******°°°°°°....       ....°°.                                                                              
+                                                                                .°°°°°.................°°°°°°°°°*********°                                                                              
+                                                                                °*°*************************°°°°°°°°°°***°                                                                              
+                                                                               .*****************************************°  *                                                                           
+                                                                               *******************************************                                                                              
+                                                                              °*******************************************.                                                                             
+                                                                             .********************************************°                                                                             
+                                                                             **********************************************.                                                                            
+                                                                            °***********************************************                                                                            
+                                                                            ************************************************°                                                                           
+                                                                           °*************************************************.                                                                          
+                                                                          .***************************************************.                                                                         
+                                                                          *****************************************************                                                                         
+                                                                         °*****************************************************°                                                                        
+                                                                         *******************************************************°                                                                       
+                                                                             .......°°°°°°°**************************************.                                                                      
+                                                                        .....                    ..........°°°°°°°°°°°°°°°°°°°...                                                                       
+                                                                       ..........................                                .                                                                      
+                                                                      .............................................................                                                                     
+                                                                      ..............................................................                                                                    
+                                                                     .........................°.....................................                                                                    
+                                                                    ........................°.        ..............................                                                                    
+                                                                   ........................°.          °............................                                                                    
+                                                                   °.......................            °............................                                                                    
+                                                                  ........................             °............................                                                                    
+                                                                  °......................             .°............................                                                                    
+                                                                 .......................              ..............................                                                                    
+                                                                 .°....................               ..............................                                                                    
+                                                                  .°°...............°.                ..............................                                                                    
+                                                                    ..°°°........°°..                 ............................°                                                                     
+                                                                        ..........                     °...........................                                                                     
+                                                                                                       .°°.......................°                                                                      
+                                                                                                         ...°°°°...............°.                                                                       
+                                                                                                               .......°°°°°°°...                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+*/
