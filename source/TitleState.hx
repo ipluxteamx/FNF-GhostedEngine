@@ -15,6 +15,7 @@ import flixel.addons.transition.TransitionData;
 import haxe.Json;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import flixel.math.FlxMath;
 #if MODS_ALLOWED
 import sys.FileSystem;
 import sys.io.File;
@@ -409,6 +410,8 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -573,6 +576,9 @@ class TitleState extends MusicBeatState
 			else
 				gfDance.animation.play('danceLeft');
 		}
+
+		if (FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 1 == 0)
+			FlxG.camera.zoom += 0.015;
 
 		if(!closedState) {
 			sickBeats++;
