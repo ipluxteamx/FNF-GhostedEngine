@@ -26,6 +26,7 @@ import openfl.Lib;
 import openfl.display.BlendMode;
 import openfl.utils.Assets;
 import flixel.math.FlxMath;
+import flixel.addons.display.FlxBackdrop;
 import Shaders;
 import flixel.addons.transition.FlxTransitionableState;
 #if sys
@@ -347,6 +348,10 @@ class FunkinLua {
 			{
 				return getInstance().members.indexOf(PlayState.instance.modchartSprites.get(obj));
 			}
+			else if (PlayState.instance.modchartBackdrops.exists(obj))
+			{
+				return getInstance().members.indexOf(PlayState.instance.modchartBackdrops.get(obj));
+			}
 			else if(PlayState.instance.modchartTexts.exists(obj))
 			{
 				return getInstance().members.indexOf(PlayState.instance.modchartTexts.get(obj));
@@ -363,6 +368,14 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "setObjectOrder", function(obj:String, position:Int) {
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				var spr:ModchartSprite = PlayState.instance.modchartSprites.get(obj);
+				if(spr.wasAdded) {
+					getInstance().remove(spr, true);
+				}
+				getInstance().insert(position, spr);
+				return;
+			}
+			if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				var spr:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
 				if(spr.wasAdded) {
 					getInstance().remove(spr, true);
 				}
@@ -932,13 +945,28 @@ class FunkinLua {
 			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 		});
-
+		Lua_helper.add_callback(lua, "makeLuaBackdrop", function(tag:String, image:String, x:Float, y:Float, ?repeatX:Bool = true, ?repeatY:Bool = true) {
+			tag = tag.replace('.', '');
+			resetBackdropTag(tag);
+			var leSprite:ModchartBackdrop = new ModchartBackdrop(x, y, repeatX, repeatY);
+			if(image != null && image.length > 0)
+			{
+				leSprite.loadGraphic(Paths.image(image));
+			}
+			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
+			PlayState.instance.modchartBackdrops.set(tag, leSprite);
+			leSprite.active = true;
+		});
 		Lua_helper.add_callback(lua, "makeGraphic", function(obj:String, width:Int, height:Int, color:String) {
 			var colorNum:Int = Std.parseInt(color);
 			if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
 
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				PlayState.instance.modchartSprites.get(obj).makeGraphic(width, height, colorNum);
+				return;
+			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				PlayState.instance.modchartBackdrops.get(obj).makeGraphic(width, height, colorNum);
 				return;
 			}
 
@@ -1006,6 +1034,10 @@ class FunkinLua {
 				PlayState.instance.modchartSprites.get(obj).scrollFactor.set(scrollX, scrollY);
 				return;
 			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				PlayState.instance.modchartBackdrops.get(obj).scrollFactor.set(scrollX, scrollY);
+				return;
+			}
 
 			var object:FlxObject = Reflect.getProperty(getInstance(), obj);
 			if(object != null) {
@@ -1042,11 +1074,54 @@ class FunkinLua {
 				}
 			}
 		});
+		Lua_helper.add_callback(lua, "addLuaBackdrop", function(tag:String, front:Bool = false)
+		{
+			if (PlayState.instance.modchartBackdrops.exists(tag))
+			{
+				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(tag);
+				if (!shit.wasAdded)
+				{
+					if (front)
+					{
+						getInstance().add(shit);
+					}
+					else
+					{
+						if (PlayState.instance.isDead)
+						{
+							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
+						}
+						else
+						{
+							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
+							if (PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position)
+							{
+								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
+							}
+							else if (PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position)
+							{
+								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
+							}
+							PlayState.instance.insert(position, shit);
+						}
+					}
+					shit.wasAdded = true;
+					// trace('added a thing: ' + tag);
+				}
+			}
+		});
 		Lua_helper.add_callback(lua, "setGraphicSize", function(obj:String, x:Int, y:Int = 0) {
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				var shit:ModchartSprite = PlayState.instance.modchartSprites.get(obj);
 				shit.setGraphicSize(x, y);
 				shit.updateHitbox();
+				return;
+			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				luaTrace('Using setGraphicSize on backdrops can crash the game, so it has been disabled.');
+				/*var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
+				shit.setGraphicSize(x, y);
+				shit.updateHitbox();*/
 				return;
 			}
 
@@ -1077,6 +1152,11 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "updateHitbox", function(obj:String) {
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				var shit:ModchartSprite = PlayState.instance.modchartSprites.get(obj);
+				shit.updateHitbox();
+				return;
+			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
 				shit.updateHitbox();
 				return;
 			}
@@ -1115,10 +1195,35 @@ class FunkinLua {
 				PlayState.instance.modchartSprites.remove(tag);
 			}
 		});
+		
+		Lua_helper.add_callback(lua, "removeLuaBackdrop", function(tag:String, destroy:Bool = true) {
+			if(!PlayState.instance.modchartBackdrops.exists(tag)) {
+				return;
+			}
+
+			var pee:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(tag);
+			if(destroy) {
+				pee.kill();
+			}
+
+			if(pee.wasAdded) {
+				getInstance().remove(pee, true);
+				pee.wasAdded = false;
+			}
+
+			if(destroy) {
+				pee.destroy();
+				PlayState.instance.modchartBackdrops.remove(tag);
+			}
+		});
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = '') {
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				PlayState.instance.modchartSprites.get(obj).cameras = [cameraFromString(camera)];
+				return true;
+			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				PlayState.instance.modchartBackdrops.get(obj).cameras = [cameraFromString(camera)];
 				return true;
 			}
 			else if(PlayState.instance.modchartTexts.exists(obj)) {
@@ -1139,6 +1244,10 @@ class FunkinLua {
 				PlayState.instance.modchartSprites.get(obj).blend = blendModeFromString(blend);
 				return true;
 			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				PlayState.instance.modchartBackdrops.get(obj).blend = blendModeFromString(blend);
+				return true;
+			}
 
 			var spr:FlxSprite = Reflect.getProperty(getInstance(), obj);
 			if(spr != null) {
@@ -1152,6 +1261,8 @@ class FunkinLua {
 			var spr:FlxSprite;
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				spr = PlayState.instance.modchartSprites.get(obj);
+			} else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				spr = PlayState.instance.modchartBackdrops.get(obj);
 			} else if(PlayState.instance.modchartTexts.exists(obj)) {
 				spr = PlayState.instance.modchartTexts.get(obj);
 			} else {
@@ -1183,6 +1294,9 @@ class FunkinLua {
 				if(PlayState.instance.modchartSprites.exists(namesArray[i])) {
 					objectsArray.push(PlayState.instance.modchartSprites.get(namesArray[i]));
 				}
+				else if (PlayState.instance.modchartBackdrops.exists(namesArray[i])) {
+					objectsArray.push(PlayState.instance.modchartBackdrops.get(namesArray[i]));
+				}
 				else if(PlayState.instance.modchartTexts.exists(namesArray[i])) {
 					objectsArray.push(PlayState.instance.modchartTexts.get(namesArray[i]));
 				}
@@ -1201,6 +1315,8 @@ class FunkinLua {
 			var spr:FlxSprite = null;
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				spr = PlayState.instance.modchartSprites.get(obj);
+			} else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				spr = PlayState.instance.modchartBackdrops.get(obj);
 			} else if(PlayState.instance.modchartTexts.exists(obj)) {
 				spr = PlayState.instance.modchartTexts.get(obj);
 			} else {
@@ -1867,6 +1983,20 @@ class FunkinLua {
 		pee.destroy();
 		PlayState.instance.modchartSprites.remove(tag);
 	}
+	
+	function resetBackdropTag(tag:String) {
+		if(!PlayState.instance.modchartBackdrops.exists(tag)) {
+			return;
+		}
+
+		var pee:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(tag);
+		pee.kill();
+		if(pee.wasAdded) {
+			PlayState.instance.remove(pee, true);
+		}
+		pee.destroy();
+		PlayState.instance.modchartBackdrops.remove(tag);
+	}
 
 	function cancelTween(tag:String) {
 		if(PlayState.instance.modchartTweens.exists(tag)) {
@@ -1882,6 +2012,9 @@ class FunkinLua {
 		var sexyProp:Dynamic = Reflect.getProperty(getInstance(), variables[0]);
 		if(PlayState.instance.modchartSprites.exists(variables[0])) {
 			sexyProp = PlayState.instance.modchartSprites.get(variables[0]);
+		}
+		if(PlayState.instance.modchartBackdrops.exists(variables[0])) {
+			sexyProp = PlayState.instance.modchartBackdrops.get(variables[0]);
 		}
 		if(PlayState.instance.modchartTexts.exists(variables[0])) {
 			sexyProp = PlayState.instance.modchartTexts.get(variables[0]);
@@ -2047,6 +2180,8 @@ class FunkinLua {
 		var coverMeInPiss:Dynamic = null;
 		if(PlayState.instance.modchartSprites.exists(objectName)) {
 			coverMeInPiss = PlayState.instance.modchartSprites.get(objectName);
+		} else if(PlayState.instance.modchartBackdrops.exists(objectName)) {
+			coverMeInPiss = PlayState.instance.modchartBackdrops.get(objectName);
 		} else if(checkForTextsToo && PlayState.instance.modchartTexts.exists(objectName)) {
 			coverMeInPiss = PlayState.instance.modchartTexts.get(objectName);
 		} else {
@@ -2118,6 +2253,20 @@ class ModchartSprite extends FlxSprite
 {
 	public var wasAdded:Bool = false;
 	//public var isInFront:Bool = false;
+}
+
+class ModchartBackdrop extends FlxBackdrop
+{
+	public var wasAdded:Bool = false;
+	//public var isInFront:Bool = false;
+
+	public function new(?x:Float = 0, ?y:Float = 0, ?repeatX:Bool = true, ?repeatY:Bool = true)
+	{
+		super(null, 1, 1, repeatX, repeatY);
+		this.x = x;
+		this.y = y;
+		antialiasing = ClientPrefs.globalAntialiasing;
+	}
 }
 
 class ModchartText extends FlxText
