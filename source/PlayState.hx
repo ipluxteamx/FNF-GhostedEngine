@@ -1174,6 +1174,10 @@ class PlayState extends MusicBeatState
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
+	
+		var luaCurStage:String = curStage;
+		setOnLuas('stageName', luaCurStage);
+	
 		callOnLuas('onCreatePost', []);
 		
 		super.create();
