@@ -240,6 +240,8 @@ class PlayState extends MusicBeatState
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
 
+	public var watermarkTxt:FlxText;
+
 	public var scoreTxt:FlxText;
 	public var scoreBarBG:AttachedSprite;
 
@@ -1037,6 +1039,13 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 		add(iconP1);
 		add(iconP2);
+
+		watermarkTxt = new FlxText(5, healthBarBG.y + 48, FlxG.width, "Ghosted Engine 0.1 - " + SONG.song + ": " + storyDifficulty, 18);
+		watermarkTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		watermarkTxt.scrollFactor.set();
+		watermarkTxt.borderSize = 1.25;
+		watermarkTxt.visible = !ClientPrefs.hideHud;
+		add(watermarkTxt);
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
