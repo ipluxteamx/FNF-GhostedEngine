@@ -254,6 +254,11 @@ class FunkinLua {
 				spr.loadGraphic(Paths.image(image));
 			}
 		});
+
+		Lua_helper.add_callback(lua, "alertWindow", function(title:String, content:String) {
+			lime.app.Application.current.window.alert(title, content);
+		});
+
 		Lua_helper.add_callback(lua, "loadFrames", function(variable:String, image:String, spriteType:String = "sparrow") {
 			var spr:FlxSprite = getObjectDirectly(variable);
 			if(spr != null && image != null && image.length > 0)
