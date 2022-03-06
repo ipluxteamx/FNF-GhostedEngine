@@ -100,6 +100,8 @@ class ChartingState extends MusicBeatState
 	public static var lastSection:Int = 0;
 	private static var lastSong:String = '';
 
+	var event7InputText:FlxUIInputText;
+
 	var bpmTxt:FlxText;
 
 	var camPos:FlxObject;
@@ -214,7 +216,9 @@ class ChartingState extends MusicBeatState
 				speed: 1,
 				stage: 'stage',
 				validScore: false,
-				mania: Note.defaultMania
+				mania: Note.defaultMania,
+				event7: null,
+				event7Value: null
 			};
 			addSection();
 			PlayState.SONG = _song;
@@ -966,6 +970,7 @@ class ChartingState extends MusicBeatState
 	}
 
 	var eventDropDown:FlxUIDropDownMenuCustom;
+	var event7DropDown:FlxUIDropDownMenuCustom;
 	var descText:FlxText;
 	var selectedEventText:FlxText;
 	function addEventsUI():Void
@@ -1026,6 +1031,18 @@ class ChartingState extends MusicBeatState
 		tab_group_event.add(text);
 		value2InputText = new FlxUIInputText(20, 150, 100, "");
 		blockPressWhileTypingOn.push(value2InputText);
+
+		var pressing7Events:Array<String> = ['---', 'None', 'Game Over', 'Go to Song', 'Reset Song', 'Crash Game', 'Play Video'];
+
+		event7DropDown = new FlxUIDropDownMenuCustom(160, 300, FlxUIDropDownMenuCustom.makeStrIdLabelArray(pressing7Events, true), function(pressed:String) {
+			trace('event pressed 1');
+			var whatIsIt:Int = Std.parseInt(pressed);
+			var arraySelectedShit:String = pressing7Events[whatIsIt];
+			_song.event7 = arraySelectedShit;
+		});
+		event7DropDown.selectedLabel = _song.event7;
+		var text:FlxText = new FlxText(160, 280, 0, "7 Event:");
+		tab_group_event.add(text);
 
 		// New event buttons
 		var removeButton:FlxButton = new FlxButton(eventDropDown.x + eventDropDown.width + 10, eventDropDown.y, '-', function()
@@ -1098,14 +1115,19 @@ class ChartingState extends MusicBeatState
 		setAllLabelsOffset(moveRightButton, -30, 0);
 		tab_group_event.add(moveRightButton);
 
+		event7InputText = new FlxUIInputText(160, event7DropDown.y + 40, 100, _song.event7Value);
+		blockPressWhileTypingOn.push(event7InputText);
+
 		selectedEventText = new FlxText(addButton.x - 100, addButton.y + addButton.height + 6, (moveRightButton.x - addButton.x) + 186, 'Selected Event: None');
 		selectedEventText.alignment = CENTER;
 		tab_group_event.add(selectedEventText);
 
+		tab_group_event.add(event7InputText);
 		tab_group_event.add(descText);
 		tab_group_event.add(value1InputText);
 		tab_group_event.add(value2InputText);
 		tab_group_event.add(eventDropDown);
+		tab_group_event.add(event7DropDown);
 
 		UI_box.addGroup(tab_group_event);
 	}
@@ -1464,6 +1486,14 @@ class ChartingState extends MusicBeatState
 	var colorSine:Float = 0;
 	override function update(elapsed:Float)
 	{
+		if (event7InputText.text == null || event7InputText.text ==  '') {
+			_song.event7Value = null;
+		}
+		else
+		{
+			_song.event7Value = event7InputText.text;
+		}
+
 		curStep = recalculateSteps();
 
 		PlayState.mania = _song.mania;
@@ -2825,7 +2855,10 @@ class ChartingState extends MusicBeatState
 			gfVersion: _song.gfVersion,
 			stage: _song.stage,
 			validScore: false,
-			mania: _song.mania
+			mania: _song.mania,
+
+			event7: null,
+			event7Value: null
 		};
 		var json = {
 			"song": eventsSong

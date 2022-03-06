@@ -1,5 +1,6 @@
 package;
 
+import Achievements.AchievementFile;
 #if desktop
 import Discord.DiscordClient;
 import sys.thread.Thread;
@@ -40,8 +41,7 @@ import openfl.Assets;
 
 using StringTools;
 typedef TitleData =
-{
-	
+{	
 	titlex:Float,
 	titley:Float,
 	startx:Float,
@@ -460,6 +460,8 @@ class TitleState extends MusicBeatState
 
 				FlxG.camera.flash(FlxColor.WHITE, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+				FlxTween.tween(logoBl, {y: 1500}, 3.7, {ease: FlxEase.expoInOut});
+				FlxTween.tween(titleText, {y: 1500}, 3.7, {ease: FlxEase.expoInOut});
 
 				transitioning = true;
 				// FlxG.sound.music.stop();

@@ -1,5 +1,6 @@
 package;
 
+import lime.system.System;
 import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
@@ -1040,10 +1041,10 @@ class PlayState extends MusicBeatState
 		add(iconP1);
 		add(iconP2);
 
-		watermarkTxt = new FlxText(15, healthBarBG.y + 40, FlxG.width, "Ghosted Engine 0.1 - " + SONG.song + ": " + storyDifficulty, 16);
-		watermarkTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		watermarkTxt = new FlxText(15, 10, FlxG.width, "Ghosted Engine 0.1 - " + SONG.song + ": " + CoolUtil.getDifficultyFilePath(), 14);
+		watermarkTxt.setFormat(Paths.font("vcr.ttf"), 14, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		watermarkTxt.scrollFactor.set();
-		watermarkTxt.borderSize = 1.25;
+		watermarkTxt.borderSize = 1.025;
 		watermarkTxt.visible = !ClientPrefs.hideHud;
 		add(watermarkTxt);
 
@@ -2433,6 +2434,43 @@ class PlayState extends MusicBeatState
 			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
 		}
 
+		if (FlxG.keys.justPressed.SEVEN && !endingSong && !inCutscene)
+		{
+			switch(SONG.event7)
+			{
+				case "---", null:
+					persistentUpdate = false;
+					paused = true;
+					CustomFadeTransition.nextCamera = camOther;
+					MusicBeatState.switchState(new ChartingState());
+					#if desktop
+					DiscordClient.changePresence("Chart Editor", null, null, true);
+					#end
+				case "Game Over":
+					health = 0;
+					paused = true;
+				case "Go to Song":
+					SONG = Song.loadFromJson(SONG.event7Value, SONG.event7Value);
+					FlxG.resetState();
+				case "Reset Song":
+					FlxG.resetState();
+				case "Crash Game":
+					System.exit(0);
+				case "Play Video":
+					updateTime = false;
+					FlxG.sound.music.volume = 0;
+					vocals.volume = 0;
+					vocals.stop();
+					FlxG.sound.music.stop();
+					KillNotes();
+
+					var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+					add(bg);
+					bg.cameras = [camHUD];
+					startVideo(SONG.event7Value);
+			}
+		}
+
 		if(botplayTxt.visible) {
 			botplaySine += 180 * elapsed;
 			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
@@ -2591,6 +2629,10 @@ class PlayState extends MusicBeatState
 			var fakeCrochet:Float = (60 / SONG.bpm) * 1000;
 			notes.forEachAlive(function(daNote:Note)
 			{
+				if(daNote.allowChangeScrollSpeed) {
+					daNote.noteSpeed = songSpeed;
+				}
+
 				var strumGroup:FlxTypedGroup<StrumNote> = playerStrums;
 				if(!daNote.mustPress) strumGroup = opponentStrums;
 
@@ -2616,12 +2658,12 @@ class PlayState extends MusicBeatState
 				if (strumScroll) //Downscroll
 				{
 					//daNote.y = (strumY + 0.45 * (Conductor.songPosition - daNote.strumTime) * songSpeed);
-					daNote.distance = (0.45 * (Conductor.songPosition - daNote.strumTime) * songSpeed);
+					daNote.distance = (0.45 * (Conductor.songPosition - daNote.strumTime) * daNote.noteSpeed);
 				}
 				else //Upscroll
 				{
 					//daNote.y = (strumY - 0.45 * (Conductor.songPosition - daNote.strumTime) * songSpeed);
-					daNote.distance = (-0.45 * (Conductor.songPosition - daNote.strumTime) * songSpeed);
+					daNote.distance = (-0.45 * (Conductor.songPosition - daNote.strumTime) * daNote.noteSpeed);
 				}
 
 				var angleDir = strumDirection * Math.PI / 180;
@@ -2642,16 +2684,16 @@ class PlayState extends MusicBeatState
 					if(strumScroll && daNote.isSustainNote)
 					{
 						if (daNote.animation.curAnim.name.endsWith('end')) {
-							daNote.y += 10.5 * (fakeCrochet / 400) * 1.5 * songSpeed + (46 * (songSpeed - 1));
-							daNote.y -= 46 * (1 - (fakeCrochet / 600)) * songSpeed;
+							daNote.y += 10.5 * (fakeCrochet / 400) * 1.5 * daNote.noteSpeed + (46 * (daNote.noteSpeed - 1));
+							daNote.y -= 46 * (1 - (fakeCrochet / 600)) * daNote.noteSpeed;
 							if(PlayState.isPixelStage) {
 								daNote.y += 8;
 							} else {
 								daNote.y -= 19;
 							}
 						} 
-						daNote.y += (Note.swagWidth / 2) - (60.5 * (songSpeed - 1));
-						daNote.y += 27.5 * ((SONG.bpm / 100) - 1) * (songSpeed - 1) * Note.scales[mania];
+						daNote.y += (Note.swagWidth / 2) - (60.5 * (daNote.noteSpeed - 1));
+						daNote.y += 27.5 * ((SONG.bpm / 100) - 1) * (daNote.noteSpeed - 1) * Note.scales[mania];
 					}
 				}
 
