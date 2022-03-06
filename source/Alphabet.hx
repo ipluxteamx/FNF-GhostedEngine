@@ -353,6 +353,10 @@ class Alphabet extends FlxSpriteGroup
 				y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), 0.16);
 				x = FlxMath.lerp(x, (targetY * 20) + 90, 0.16);
 
+			case "Centered":
+				screenCenter(X);
+				x -= 15;
+
 			case "Vertical":
 				y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.5), 0.16);
 				x = FlxMath.lerp(x, (targetY * 0) + 308, 0.16);

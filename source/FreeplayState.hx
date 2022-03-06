@@ -117,7 +117,7 @@ class FreeplayState extends MusicBeatState
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
 			songText.isMenuItem = true;
-			songText.itemType = "Normal";
+			songText.itemType = "Centered";
 			songText.targetY = i;
 			grpSongs.add(songText);
 
@@ -147,7 +147,7 @@ class FreeplayState extends MusicBeatState
 		textBG.alpha = 0.6;
 		add(textBG);
 
-		directoryTxt = new FlxText(textBG.x, textBG.y + 4, FlxG.width, '', 32);
+		directoryTxt = new FlxText(textBG.x, textBG.y + 8, FlxG.width, '', 32);
 		directoryTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		directoryTxt.scrollFactor.set();
 		add(directoryTxt);
