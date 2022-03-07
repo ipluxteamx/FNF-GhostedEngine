@@ -306,4 +306,11 @@ class MainMenuState extends MusicBeatState
 			}
 		});
 	}
+	
+	override function beatHit()
+	{
+		super.beatHit();
+		if (curBeat % 4 == 0 && ClientPrefs.camZooms)
+			FlxG.camera.zoom = 1.015;
+	}
 }
