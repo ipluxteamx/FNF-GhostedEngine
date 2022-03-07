@@ -388,8 +388,6 @@ class Alphabet extends FlxSpriteGroup
 				if (x < -900)
 					x = -900;
 		}
-		if (!noY && !itemNoY)
-			y = FlxMath.lerp(y, (scaledY * yMult) + (FlxG.height * 0.48) + yAdd, lerpVal);
 		
 		super.update(elapsed);
 	}
