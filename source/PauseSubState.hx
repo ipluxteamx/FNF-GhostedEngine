@@ -178,7 +178,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.botplayTxt.alpha = 1;
 					PlayState.instance.botplaySine = 0;
 				case "Options":
-					MusicBeatState.switchState(new options.OptionsState());
+					MusicBeatState.switchState(new options.OptionsState(true));
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
