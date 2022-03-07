@@ -335,6 +335,8 @@ class Alphabet extends FlxSpriteGroup
 	override function update(elapsed:Float)
 	{
 		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
+		var lerpVal:Float = CoolUtil.boundTo(elapsed * 9.6, 0, 1);
+		var itemNoY:Bool = false;
 
 		if (isMenuItem)
 		{
@@ -386,6 +388,9 @@ class Alphabet extends FlxSpriteGroup
 				if (x < -900)
 					x = -900;
 		}
+		if (!noY && !itemNoY)
+			y = FlxMath.lerp(y, (scaledY * yMult) + (FlxG.height * 0.48) + yAdd, lerpVal);
+		
 		super.update(elapsed);
 	}
 
