@@ -49,7 +49,6 @@ class ClientPrefs {
 		'botplay' => false,
 		'opponentplay' => false
 	];
-	public static var inputSystem:String = 'Native';
 
 	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
 	public static var noAntimash:Bool = false;
@@ -194,7 +193,6 @@ class ClientPrefs {
 		FlxG.save.data.badWindow = badWindow;
 		FlxG.save.data.safeFrames = safeFrames;
 		FlxG.save.data.gameplaySettings = gameplaySettings;
-		FlxG.save.data.inputSystem = inputSystem;
 		FlxG.save.data.controllerMode = controllerMode;
 		FlxG.save.data.hitsoundVolume = hitsoundVolume;
 	
@@ -260,9 +258,6 @@ class ClientPrefs {
 		if(FlxG.save.data.hsv11 != null) {
 			arrowHSV = FlxG.save.data.hsv11;
 		}
-		if (FlxG.save.data.inputSystem != null) {
-			inputSystem = FlxG.save.data.inputSystem;
-		} 
 		if(FlxG.save.data.ghostTapping != null) {
 			ghostTapping = FlxG.save.data.ghostTapping;
 		}

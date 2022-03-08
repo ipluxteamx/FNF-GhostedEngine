@@ -153,12 +153,6 @@ class Note extends FlxSprite
 	var defaultWidth:Float = 0;
 	var defaultHeight:Float = 0;
 
-	public var isParent:Bool; //ke input shits
-	public var childs:Array<Note> = [];
-	public var parent:Note;
-	public var susActive:Bool = true;
-	public var spotInLine:Int = 0;
-
 	private function set_texture(value:String):String {
 		if(texture != value) {
 			reloadNote('', value);
@@ -451,8 +445,6 @@ class Note extends FlxSprite
 					wasGoodHit = true;
 			}
 		}
-
-		if (isSustainNote && !susActive) multAlpha = 0.2;
 
 		if (tooLate && !inEditor)
 		{
