@@ -665,7 +665,7 @@ class TitleState extends MusicBeatState
 		{
 			remove(ngSpr);
 
-			gradientBar = FlxGradient.createGradientFlxSprite(Math.round(FlxG.width), 512, [0x00, 0x553D0468, 0xAA0F5FFF], 1, 90, true);
+			gradientBar = FlxGradient.createGradientFlxSprite(Math.round(FlxG.width), 512, [0x00, 0x553D0468, 0xFFFFA500], 1, 90, true);
 	    	gradientBar.y = FlxG.height - gradientBar.height;
 	     	gradientBar.scale.y = 0;
 			gradientBar.alpha = 0.5;

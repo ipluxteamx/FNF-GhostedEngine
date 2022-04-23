@@ -1044,7 +1044,7 @@ class PlayState extends MusicBeatState
 		var storyDifficultyTxt:String = ""; //eh
 		storyDifficultyTxt = CoolUtil.difficulties[storyDifficulty];
 
-		watermarkTxt = new FlxText(12, healthBarBG.y + 56, FlxG.width, "Ghosted Engine 0.1 (PE 0.5.1) - " + SONG.song + ": " + storyDifficultyTxt, 14);
+		watermarkTxt = new FlxText(12, healthBarBG.y + 58, FlxG.width, "Ghosted Engine 0.1 (PE 0.5.1) - " + SONG.song + ": " + storyDifficultyTxt, 14);
 		watermarkTxt.setFormat(Paths.font("vcr.ttf"), 14, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		watermarkTxt.scrollFactor.set();
 		watermarkTxt.borderSize = 1.025;

@@ -1034,14 +1034,14 @@ class ChartingState extends MusicBeatState
 
 		var pressing7Events:Array<String> = ['---', 'None', 'Game Over', 'Go to Song', 'Reset Song', 'Crash Game', 'Play Video'];
 
-		event7DropDown = new FlxUIDropDownMenuCustom(50, 120, FlxUIDropDownMenuCustom.makeStrIdLabelArray(pressing7Events, true), function(pressed:String) {
+		event7DropDown = new FlxUIDropDownMenuCustom(50, 190, FlxUIDropDownMenuCustom.makeStrIdLabelArray(pressing7Events, true), function(pressed:String) {
 			trace('event pressed 1');
 			var whatIsIt:Int = Std.parseInt(pressed);
 			var arraySelectedShit:String = pressing7Events[whatIsIt];
 			_song.event7 = arraySelectedShit;
 		});
 		event7DropDown.selectedLabel = _song.event7;
-		var text:FlxText = new FlxText(50, 95, 0, "7 Event:");
+		var text:FlxText = new FlxText(20, 170, 0, "7 Event:");
 		tab_group_event.add(text);
 
 		// New event buttons
