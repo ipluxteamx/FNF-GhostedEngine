@@ -177,7 +177,7 @@ class PlayState extends MusicBeatState
 	public var bads:Int = 0;
 	public var shits:Int = 0;
 	
-	public static var mania:Int = 0;
+	public static var mania:Null<Int> = 0;
 	
 	private var generatedMusic:Bool = false;
 	public var endingSong:Bool = false;
@@ -342,7 +342,7 @@ class PlayState extends MusicBeatState
 		persistentDraw = true;
 
 		mania = SONG.mania;
-		if (mania < Note.minMania || mania > Note.maxMania)
+		if (mania < Note.minMania || mania > Note.maxMania || mania == null)
 			mania = Note.defaultMania;
 
 		if (SONG == null)

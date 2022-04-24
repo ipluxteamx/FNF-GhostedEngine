@@ -224,6 +224,9 @@ class ChartingState extends MusicBeatState
 			PlayState.SONG = _song;
 		}
 
+		if (_song.mania < Note.minMania || _song.mania > Note.maxMania || _song.mania == null)
+			_song.mania = Note.defaultMania;
+
 		// Paths.clearMemory();
 
 		PlayState.mania = _song.mania;
