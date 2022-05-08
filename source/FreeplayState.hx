@@ -566,7 +566,7 @@ class FreeplayState extends MusicBeatState
 		diffText.x -= diffText.width / 2;
 	}
 
-	#if MODS_ALLOWED
+	/*#if MODS_ALLOWED
 	function changeDirectory(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
@@ -588,7 +588,7 @@ class FreeplayState extends MusicBeatState
 		}
 		directoryTxt.text = directoryTxt.text.toUpperCase();
 	}
-	#end
+	#end*/
 }
 
 class SongMetadata
