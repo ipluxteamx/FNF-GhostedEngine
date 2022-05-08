@@ -142,7 +142,7 @@ class FreeplayState extends MusicBeatState
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
-		#if MODS_ALLOWED
+		/*#if MODS_ALLOWED
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 62).makeGraphic(FlxG.width, 42, 0xFF000000);
 		textBG.alpha = 0.6;
 		add(textBG);
@@ -160,7 +160,7 @@ class FreeplayState extends MusicBeatState
 		var found:Int = directories.indexOf(Paths.currentModDirectory);
 		if(found > -1) curDirectory = found;
 		changeDirectory();
-		#end
+		#end*/
 		
 
 
@@ -330,7 +330,7 @@ class FreeplayState extends MusicBeatState
 			changeDiff(1);
 		else if (upP || downP) changeDiff();
 
-		#if MODS_ALLOWED
+		/*#if MODS_ALLOWED
 		if(q)
 		{
 			changeDirectory(-1);
@@ -339,7 +339,7 @@ class FreeplayState extends MusicBeatState
 		{
 			changeDirectory(1);
 		}
-		#end
+		#end*/
 
 		if (controls.BACK)
 		{
