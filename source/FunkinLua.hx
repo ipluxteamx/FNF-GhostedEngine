@@ -18,6 +18,9 @@ import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
+import openfl.display.BitmapData;
+import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
+import openfl.geom.Rectangle;
 import flixel.util.FlxColor;
 import flixel.FlxBasic;
 import flixel.FlxObject;
@@ -28,6 +31,9 @@ import openfl.utils.Assets;
 import flixel.math.FlxMath;
 import flixel.addons.display.FlxBackdrop;
 import Shaders;
+import flixel.math.FlxRect;
+import haxe.xml.Access;
+import openfl.system.System;
 import flixel.addons.transition.FlxTransitionableState;
 #if sys
 import sys.FileSystem;
@@ -245,6 +251,12 @@ class FunkinLua {
 				return;
 			}
 			luaTrace("Script doesn't exist! " + cervix);
+		});
+
+		Lua_helper.add_callback(lua, "setCurrentLevel", function(name:String) { // YOU CAN NOW CHANGE SONGS DURING A SONG WHICH I THINK WAS NEVER DONE BEFORE IN LUA!!
+			Paths.setCurrentLevel(name);
+//			Playstate.SONG = (name); // does this code work?? ill try it later.
+			return true;
 		});
 
 		//stuff 4 noobz like you B)
@@ -1788,6 +1800,19 @@ class FunkinLua {
 			PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
 			
 		});
+
+		Lua_helper.add_callback(lua, "addRaymarchEffect", function(camera:String) {
+			
+			PlayState.instance.addShaderToCamera(camera, new RaymarchEffect());
+			
+		});
+
+		Lua_helper.add_callback(lua, "addNoteEffect", function(camera:String) {
+			
+			PlayState.instance.addShaderToCamera(camera, new NoteEffect());
+			
+		});
+
 		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String,grainSize:Float,lumAmount:Float,lockAlpha:Bool=false) {
 			
 			PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize,lumAmount,lockAlpha));

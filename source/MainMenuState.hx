@@ -17,11 +17,23 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
+import haxe.Json;
+#if MODS_ALLOWED
+import sys.io.File;
+import sys.FileSystem;
+#end
 import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
+import openfl.Assets;
 
 using StringTools;
+
+typedef MenuData =
+{	
+	menuItemsX:Float,
+	backgroundSprite:String
+}
 
 class MainMenuState extends MusicBeatState
 {
@@ -32,6 +44,8 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
+
+	var menuJSON:MenuData;
 	
 	var optionShit:Array<String> = [
 		'story_mode',
@@ -70,9 +84,30 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
+		#if (desktop && MODS_ALLOWED)
+		var path = "mods/" + Paths.currentModDirectory + "/images/menuOptions.json";
+		//trace(path, FileSystem.exists(path));
+		if (!FileSystem.exists(path)) {
+			path = "mods/images/menuOptions.json";
+		}
+		//trace(path, FileSystem.exists(path));
+		if (!FileSystem.exists(path)) {
+			path = "assets/images/menuOptions.json";
+		}
+		//trace(path, FileSystem.exists(path));
+		menuJSON = Json.parse(File.getContent(path));
+		#else
+		var path = Paths.getPreloadPath("images/menuOptions.json");
+		menuJSON = Json.parse(Assets.getText(path)); 
+		#end
+
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
 		//var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		if (menuJSON.backgroundSprite != null && menuJSON.backgroundSprite.length > 0 && menuJSON.backgroundSprite != "none") {
+			bg = new FlxSprite(-80).loadGraphic(Paths.image(menuJSON.backgroundSprite));
+		} else {
+			bg = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		}
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();

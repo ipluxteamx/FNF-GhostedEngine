@@ -49,6 +49,7 @@ typedef TitleData =
 	gfx:Float,
 	gfy:Float,
 	backgroundSprite:String,
+	foregroundSprite:String,
 	bpm:Int
 }
 class TitleState extends MusicBeatState
@@ -65,6 +66,8 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+	var bg:FlxSprite = new FlxSprite();
+	var fg:FlxSprite = new FlxSprite();
 
 	var Timer:Float = 0;
 
@@ -167,6 +170,12 @@ class TitleState extends MusicBeatState
 		FlxG.keys.preventDefaultKeys = [TAB];
 
 		PlayerSettings.init();
+		
+		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none") {
+			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
+		} else {
+			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		}
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -258,12 +267,10 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(titleJSON.bpm);
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite();
-		
-		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none"){
-			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
-		}else{
-			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		if (titleJSON.foregroundSprite != null && titleJSON.foregroundSprite.length > 0 && titleJSON.foregroundSprite != "none") {
+			fg.loadGraphic(Paths.image(titleJSON.foregroundSprite));
+		} else {
+			fg.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT);
 		}
 		
 		// bg.antialiasing = ClientPrefs.globalAntialiasing;
@@ -326,6 +333,9 @@ class TitleState extends MusicBeatState
 	
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
 		add(gfDance);
+
+		add(fg);
+
 		gfDance.shader = swagShader.shader;
 		add(logoBl);
 		//logoBl.shader = swagShader.shader;
