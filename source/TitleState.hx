@@ -50,6 +50,7 @@ typedef TitleData =
 	gfy:Float,
 	backgroundSprite:String,
 	foregroundSprite:String,
+	titleText:String,
 	bpm:Int
 }
 class TitleState extends MusicBeatState
@@ -66,6 +67,7 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+	var loadingTxt:FlxText;
 	var bg:FlxSprite = new FlxSprite();
 	var fg:FlxSprite = new FlxSprite();
 
@@ -163,6 +165,14 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
+		/*if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none") {
+			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
+		} else {
+			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		}
+
+		add(bg);*/
+
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.sound.muteKeys = muteKeys;
 		FlxG.sound.volumeDownKeys = volumeDownKeys;
@@ -170,12 +180,6 @@ class TitleState extends MusicBeatState
 		FlxG.keys.preventDefaultKeys = [TAB];
 
 		PlayerSettings.init();
-		
-		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none") {
-			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
-		} else {
-			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		}
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -183,6 +187,16 @@ class TitleState extends MusicBeatState
 
 		swagShader = new ColorSwap();
 		super.create();
+
+		loadingTxt = new FlxText(0, 0, FlxG.width, "Loading...", 64);
+		if(FlxG.random.bool(0.1)) loadingTxt.text += '\nBITCH.'; //meanie
+		loadingTxt.setFormat(Paths.font("vcr.ttf"), 64, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		loadingTxt.scrollFactor.set();
+		loadingTxt.borderSize = 2;
+		loadingTxt.alpha = 1;
+
+		add(loadingTxt);
+		loadingTxt.screenCenter();
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
@@ -224,16 +238,35 @@ class TitleState extends MusicBeatState
 			});
 		}
 		#end
+		if(!initialized) {
+			if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none") {
+				bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
+			} else {
+				bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			}
+			bg.screenCenter();
+			add(bg);
+		}
 	}
 
 	var logoBl:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
+	var titleTxt:FlxText; // keeping the old one just in case
 	var swagShader:ColorSwap = null;
 
 	function startIntro()
 	{
+		if(initialized) {
+			if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none") {
+				bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
+			} else {
+				bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			}
+			bg.screenCenter();
+			add(bg);
+		}
 		if (!initialized)
 		{
 			/*var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
@@ -276,13 +309,10 @@ class TitleState extends MusicBeatState
 		// bg.antialiasing = ClientPrefs.globalAntialiasing;
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
-		
-		
-		
-		
-		add(bg);
 
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
+
+		loadingTxt.alpha = 0;
 		
 		
 		#if (desktop && MODS_ALLOWED)
@@ -340,9 +370,10 @@ class TitleState extends MusicBeatState
 		add(logoBl);
 		//logoBl.shader = swagShader.shader;
 
-		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
+		//titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
+		
 		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/titleEnter.png";
+		/*var path = "mods/" + Paths.currentModDirectory + "/images/titleEnter.png";
 		//trace(path, FileSystem.exists(path));
 		if (!FileSystem.exists(path)){
 			path = "mods/images/titleEnter.png";
@@ -352,10 +383,22 @@ class TitleState extends MusicBeatState
 			path = "assets/images/titleEnter.png";
 		}
 		//trace(path, FileSystem.exists(path));
-		titleText.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path),File.getContent(StringTools.replace(path,".png",".xml")));
+		// titleText.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path),File.getContent(StringTools.replace(path,".png",".xml")));
+		*/
+		titleTxt = new FlxText(titleJSON.startx, titleJSON.starty, FlxG.width, '', 64);
+		if (titleJSON.titleText != null && titleJSON.titleText.length > 0 && titleJSON.titleText != "none") {
+			titleTxt.text = titleJSON.titleText; 
+		} else {
+			titleTxt.text = "Press Enter to Begin";
+		}
+		titleTxt.setFormat(Paths.font("vcr.ttf"), 64, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		titleTxt.scrollFactor.set();
+		titleTxt.borderSize = 2;
+		titleTxt.screenCenter(X);
+		add(titleTxt);
 		#else
 		
-		titleText.frames = Paths.getSparrowAtlas('titleEnter');
+		/*titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		#end
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
@@ -363,7 +406,16 @@ class TitleState extends MusicBeatState
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
-		add(titleText);
+		add(titleText);*/
+
+		titleTxt = new FlxText(100, 595, FlxG.width, '', 64);
+		titleTxt.text = "Press Enter to Begin";
+		titleTxt.setFormat(Paths.font("vcr.ttf"), 64, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		titleTxt.scrollFactor.set();
+		titleTxt.borderSize = 2;
+		titleTxt.screenCenter(X);
+		add(titleTxt);
+		#end
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.screenCenter();
@@ -377,7 +429,13 @@ class TitleState extends MusicBeatState
 		add(credGroup);
 		textGroup = new FlxGroup();
 
-		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none") {
+			blackScreen = new FlxSprite().loadGraphic(Paths.image(titleJSON.backgroundSprite));
+			blackScreen.alpha = 0.85;
+		} else {
+			blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		}
+		blackScreen.screenCenter();
 		credGroup.add(blackScreen);
 
 		credTextShit = new Alphabet(0, 0, "", true);
@@ -471,7 +529,7 @@ class TitleState extends MusicBeatState
 				FlxG.camera.flash(FlxColor.WHITE, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 				FlxTween.tween(logoBl, {y: 1500}, 3.7, {ease: FlxEase.expoInOut});
-				FlxTween.tween(titleText, {y: 1500}, 3.7, {ease: FlxEase.expoInOut});
+				FlxTween.tween(titleTxt, {y: 1500}, 3.7, {ease: FlxEase.expoInOut});
 
 				transitioning = true;
 				// FlxG.sound.music.stop();
