@@ -46,6 +46,8 @@ typedef TitleData =
 	titley:Float,
 	startx:Float,
 	starty:Float,
+	startFontSize:Int,
+	centerText:Bool,
 	gfx:Float,
 	gfy:Float,
 	backgroundSprite:String,
@@ -195,7 +197,6 @@ class TitleState extends MusicBeatState
 		loadingTxt.borderSize = 2;
 		loadingTxt.alpha = 1;
 
-		add(loadingTxt);
 		loadingTxt.screenCenter();
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
@@ -247,6 +248,8 @@ class TitleState extends MusicBeatState
 			bg.screenCenter();
 			add(bg);
 		}
+
+		add(loadingTxt);
 	}
 
 	var logoBl:FlxSprite;
@@ -385,16 +388,18 @@ class TitleState extends MusicBeatState
 		//trace(path, FileSystem.exists(path));
 		// titleText.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path),File.getContent(StringTools.replace(path,".png",".xml")));
 		*/
-		titleTxt = new FlxText(titleJSON.startx, titleJSON.starty, FlxG.width, '', 64);
+		titleTxt = new FlxText(titleJSON.startx, titleJSON.starty, FlxG.width, '', titleJSON.startFontSize);
 		if (titleJSON.titleText != null && titleJSON.titleText.length > 0 && titleJSON.titleText != "none") {
 			titleTxt.text = titleJSON.titleText; 
 		} else {
 			titleTxt.text = "Press Enter to Begin";
 		}
-		titleTxt.setFormat(Paths.font("vcr.ttf"), 64, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		titleTxt.setFormat(Paths.font("vcr.ttf"), titleJSON.startFontSize, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		titleTxt.scrollFactor.set();
 		titleTxt.borderSize = 2;
-		titleTxt.screenCenter(X);
+		if (titleJSON.centerText != false && titleJSON.centerText == true) {
+			titleTxt.screenCenter(X);
+		}
 		add(titleTxt);
 		#else
 		

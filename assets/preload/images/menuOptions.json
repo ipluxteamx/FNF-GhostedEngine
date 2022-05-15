@@ -1,4 +1,5 @@
 {	
-	"menuItemsX":null,
+	"menuItemsAlignement":"left",
+	"menuItemsX":0,
 	"backgroundSprite":""
 }

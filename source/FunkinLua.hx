@@ -830,18 +830,30 @@ class FunkinLua {
 			return Conductor.songPosition;
 		});
 					
-		Lua_helper.add_callback(lua, "loadSong", function(jsonInput:String, folder:String, skipTransition:Bool) {
-			trace("trying to load new song " + jsonInput + " from folder " + folder);
-			if(skipTransition)
-			{
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-			}
+		Lua_helper.add_callback(lua, "loadSong", function(?name:String = null, ?difficultyNum:Int = -1) {
+			if(name == null || name.length < 1)
+				name = PlayState.SONG.song;
+			if (difficultyNum == -1)
+				difficultyNum = PlayState.storyDifficulty;
 
-			PlayState.SONG = Song.loadFromJson(jsonInput, folder);
-			FlxG.sound.music.stop();
-			PlayState.cancelMusicFadeTween();
+			var poop = Highscore.formatSong(name, difficultyNum);
+			PlayState.SONG = Song.loadFromJson(poop, name);
+			PlayState.storyDifficulty = difficultyNum;
+			PlayState.instance.persistentUpdate = false;
 			LoadingState.loadAndSwitchState(new PlayState());
+
+			FlxG.sound.music.pause();
+			FlxG.sound.music.volume = 0;
+			if(PlayState.instance.vocals != null)
+			{
+				PlayState.instance.vocals.pause();
+				PlayState.instance.vocals.volume = 0;
+			}
+		});
+
+		Lua_helper.add_callback(lua, "clearUnusedMemory", function() {
+			Paths.clearUnusedMemory();
+			return true;
 		});
 
 		Lua_helper.add_callback(lua, "getCharacterX", function(type:String) {
@@ -1871,6 +1883,61 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "clearEffects", function(camera:String) {
 			PlayState.instance.clearShaderFromCamera(camera);
 		});
+
+		//custom functions
+		Lua_helper.add_callback(lua, "getMidpoint", function(obj:String, ?type:String = 'x') {
+			if(PlayState.instance.modchartSprites.exists(obj)) {
+				var cock:ModchartSprite = PlayState.instance.modchartSprites.get(obj);
+				switch (type) {
+					case 'y':
+						return cock.getMidpoint().y;
+				}
+				return cock.getMidpoint().x;
+			}
+			if(PlayState.instance.modchartTexts.exists(obj)) {
+				var cock:ModchartText = PlayState.instance.modchartTexts.get(obj);
+				switch (type) {
+					case 'y':
+						return cock.getMidpoint().y;
+				}
+				return cock.getMidpoint().x;
+			}
+
+			var cock:FlxSprite = Reflect.getProperty(getInstance(), obj);
+			switch (type) {
+				case 'y':
+					return cock.getMidpoint().y;
+			}
+			return cock.getMidpoint().x;
+		});
+		Lua_helper.add_callback(lua, "getGraphicMidpoint", function(obj:String, ?type:String = 'x') {
+			if(PlayState.instance.modchartSprites.exists(obj)) {
+				var cock:ModchartSprite = PlayState.instance.modchartSprites.get(obj);
+				switch (type) {
+					case 'y':
+						return cock.getGraphicMidpoint().y;
+				}
+				return cock.getGraphicMidpoint().x;
+			}
+			if(PlayState.instance.modchartTexts.exists(obj)) {
+				var cock:ModchartText = PlayState.instance.modchartTexts.get(obj);
+				switch (type) {
+					case 'y':
+						return cock.getGraphicMidpoint().y;
+				}
+				return cock.getGraphicMidpoint().x;
+			}
+
+			var cock:FlxSprite = Reflect.getProperty(getInstance(), obj);
+			switch (type) {
+				case 'y':
+					return cock.getGraphicMidpoint().y;
+			}
+			return cock.getGraphicMidpoint().x;
+		});
+		Lua_helper.add_callback(lua, "snapCamFollow", function(?x:Float = 0, ?y:Float = 0) {
+			PlayState.instance.snapCamFollowToPos(x, y);
+		});
 		Discord.DiscordClient.addLuaCallbacks(lua);
 		
 		//MATH FUNCTIONS
@@ -2192,6 +2259,7 @@ class FunkinLua {
 			}
 
 			var conv:Dynamic = Convert.fromLua(lua, result);
+			Lua.pop(lua, 1);
 			return conv;
 		}
 		#end

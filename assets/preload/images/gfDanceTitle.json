@@ -3,6 +3,8 @@
 	"titley":-100,
 	"startx":100,
 	"starty":595,
+	"startFontSize":64,
+	"centerText":true,
 	"gfx":512,
 	"gfy":40,
 	"backgroundSprite":"",
