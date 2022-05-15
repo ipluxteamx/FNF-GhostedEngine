@@ -1,5 +1,6 @@
 package editors;
 
+import flixel.addons.ui.FlxUISlider;
 #if desktop
 import Discord.DiscordClient;
 #end
