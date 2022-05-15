@@ -66,6 +66,8 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		Paths.clearUnusedMemory();
+
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);

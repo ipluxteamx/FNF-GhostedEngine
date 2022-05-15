@@ -668,16 +668,16 @@ class TitleState extends MusicBeatState
 			{
 				case 1:
 					#if PSYCH_WATERMARKS
-					createCoolText(['Psych Engine by'], 15);
+					createCoolText(['Ghosted Engine by'], 15);
 					#else
 					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 					#end
 				// credTextShit.visible = true;
 				case 3:
 					#if PSYCH_WATERMARKS
-					addMoreText('Shadow Mario', 15);
-					addMoreText('RiverOaken', 15);
-					addMoreText('bb-panzu', 15);
+					addMoreText('iplux', 15);
+					addMoreText('I', 15);
+					addMoreText('guess', 15);
 					#else
 					addMoreText('present');
 					#end
@@ -690,17 +690,21 @@ class TitleState extends MusicBeatState
 				// credTextShit.screenCenter();
 				case 5:
 					#if PSYCH_WATERMARKS
-					createCoolText(['Extra keys mod', 'by'], -40);
+					createCoolText(['Used', 'in'], -40);
 					#else
 					createCoolText(['In association', 'with'], -40);
 					#end
 				case 7:
-					addMoreText('tposejank', -40);
+					addMoreText('V.S. Ghosty V2', -40);
+					#if !PSYCH_WATERMARKS
 					ngSpr.visible = true;
+					#end
 				// credTextShit.text += '\nNewgrounds';
 				case 8:
 					deleteCoolText();
+					#if !PSYCH_WATERMARKS
 					ngSpr.visible = false;
+					#end
 				// credTextShit.visible = false;
 
 				// credTextShit.text = 'Shoutouts Tom Fulp';
