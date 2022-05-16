@@ -902,12 +902,12 @@ class PlayState extends MusicBeatState
 		add(timeBarBG);
 
 		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 8, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
-			'songPercent', 0, 1);
+			'songPercent', 0, 1, true);
 		timeBar.scrollFactor.set();
 		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
-		timeBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
-		timeBar.alpha = 0;
+		timeBar.numDivisions = 400; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		timeBar.visible = showTime;
+		timeBar.alpha = 0.5;
 		add(timeBar);
 		add(timeTxt);
 		timeBarBG.sprTracker = timeBar;
@@ -2586,11 +2586,13 @@ class PlayState extends MusicBeatState
 					var songCalc:Float = curTime;
 					// if(ClientPrefs.timeBarType == 'Time Elapsed') songCalc = ;
 
+					var timeTotal:Float = Math.floor(songLength / 1000); // if song length == 3:00 then timetotal converted = 3:00
+
 					var secondsTotal:Int = Math.floor(songCalc / 1000);
 					if(secondsTotal < 0) secondsTotal = 0;
 
 					if(ClientPrefs.timeBarType != 'Song Name')
-						timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false) + " / " + FlxStringUtil.formatTime(curTime, false);
+						timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false) + " / " + FlxStringUtil.formatTime(timeTotal, false);
 				}
 			}
 
