@@ -2862,6 +2862,7 @@ class ChartingState extends MusicBeatState
 			gfVersion: _song.gfVersion,
 			stage: _song.stage,
 			validScore: false,
+			specialAudioName: null,
 			mania: _song.mania,
 
 			event7: null,
