@@ -29,6 +29,8 @@ typedef SwagSong =
 
 	var mania:Null<Int>;
 
+	var specialAudioName:Null<String>;
+
 	var arrowSkin:String;
 	var splashSkin:String;
 	var validScore:Bool;
