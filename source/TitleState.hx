@@ -14,6 +14,7 @@ import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import haxe.Json;
+import flixel.effects.FlxFlicker;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import flixel.math.FlxMath;
