@@ -218,6 +218,7 @@ class ChartingState extends MusicBeatState
 				speed: 1,
 				stage: 'stage',
 				validScore: false,
+				specialAudioName: null,
 				mania: Note.defaultMania,
 				event7: null,
 				event7Value: null
@@ -308,7 +309,7 @@ class ChartingState extends MusicBeatState
 		quant.yAdd = 8;
 		add(quant);
 
-		difficulty = PlayState.storyDifficultyStr.toLowerCase();
+		difficulty = PlayState.storyDifficultyText.toLowerCase();
 		
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		for (i in 0...(Note.ammo[_song.mania] * 2)){
@@ -482,71 +483,6 @@ class ChartingState extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 		blockPressWhileTypingOnStepper.push(stepperBPM);
-
-		var copyButton:FlxButton = new FlxButton(10, 150, "Copy Section", function()
-		{
-			notesCopied = [];
-			sectionToCopy = curSection;
-			for (i in 0..._song.notes[curSection].sectionNotes.length)
-			{
-				var note:Array<Dynamic> = _song.notes[curSection].sectionNotes[i];
-				notesCopied.push(note);
-			}
-			
-			var startThing:Float = sectionStartTime();
-			var endThing:Float = sectionStartTime(1);
-			for (event in _song.events)
-			{
-				var strumTime:Float = event[0];
-				if(endThing > event[0] && event[0] >= startThing)
-				{
-					var copiedEventArray:Array<Dynamic> = [];
-					for (i in 0...event[1].length)
-					{
-						var eventToPush:Array<Dynamic> = event[1][i];
-						copiedEventArray.push([eventToPush[0], eventToPush[1], eventToPush[2]]);
-					}
-					notesCopied.push([strumTime, -1, copiedEventArray]);
-				}
-			}
-		});
-
-		var pasteButton:FlxButton = new FlxButton(10, 180, "Paste Section", function()
-		{
-			if(notesCopied == null || notesCopied.length < 1)
-			{
-				return;
-			}
-
-			var addToTime:Float = Conductor.stepCrochet * (_song.notes[curSection].lengthInSteps * (curSection - sectionToCopy));
-			//trace('Time to add: ' + addToTime);
-
-			for (note in notesCopied)
-			{
-				var copiedNote:Array<Dynamic> = [];
-				var newStrumTime:Float = note[0] + addToTime;
-				if(note[1] < 0)
-				{
-					var copiedEventArray:Array<Dynamic> = [];
-					for (i in 0...note[2].length)
-					{
-						var eventToPush:Array<Dynamic> = note[2][i];
-						copiedEventArray.push([eventToPush[0], eventToPush[1], eventToPush[2]]);
-					}
-					_song.events.push([newStrumTime, copiedEventArray]);
-				}
-				else
-				{
-					if(note[4] != null) {
-						copiedNote = [newStrumTime, note[1], note[2], note[3], note[4]];
-					} else {
-						copiedNote = [newStrumTime, note[1], note[2], note[3]];
-					}	
-					_song.notes[curSection].sectionNotes.push(copiedNote);
-				}
-			}
-			updateGrid();
-		});
 
 		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, stepperBPM.y + 35, 0.1, 1, 0.1, 10, 1);
 		stepperSpeed.value = _song.speed;
@@ -768,8 +704,70 @@ class ChartingState extends MusicBeatState
 		stepperSectionBPM.name = 'section_bpm';
 		blockPressWhileTypingOnStepper.push(stepperSectionBPM);
 
+		var copyButton:FlxButton = new FlxButton(10, 150, "Copy Section", function()
+		{
+			notesCopied = [];
+			sectionToCopy = curSection;
+			for (i in 0..._song.notes[curSection].sectionNotes.length)
+			{
+				var note:Array<Dynamic> = _song.notes[curSection].sectionNotes[i];
+				notesCopied.push(note);
+			}
+			
+			var startThing:Float = sectionStartTime();
+			var endThing:Float = sectionStartTime(1);
+			for (event in _song.events)
+			{
+				var strumTime:Float = event[0];
+				if(endThing > event[0] && event[0] >= startThing)
+				{
+					var copiedEventArray:Array<Dynamic> = [];
+					for (i in 0...event[1].length)
+					{
+						var eventToPush:Array<Dynamic> = event[1][i];
+						copiedEventArray.push([eventToPush[0], eventToPush[1], eventToPush[2]]);
+					}
+					notesCopied.push([strumTime, -1, copiedEventArray]);
+				}
+			}
+		});
 
-		
+		var pasteButton:FlxButton = new FlxButton(10, 180, "Paste Section", function()
+		{
+			if(notesCopied == null || notesCopied.length < 1)
+			{
+				return;
+			}
+
+			var addToTime:Float = Conductor.stepCrochet * (_song.notes[curSection].lengthInSteps * (curSection - sectionToCopy));
+			//trace('Time to add: ' + addToTime);
+
+			for (note in notesCopied)
+			{
+				var copiedNote:Array<Dynamic> = [];
+				var newStrumTime:Float = note[0] + addToTime;
+				if(note[1] < 0)
+				{
+					var copiedEventArray:Array<Dynamic> = [];
+					for (i in 0...note[2].length)
+					{
+						var eventToPush:Array<Dynamic> = note[2][i];
+						copiedEventArray.push([eventToPush[0], eventToPush[1], eventToPush[2]]);
+					}
+					_song.events.push([newStrumTime, copiedEventArray]);
+				}
+				else
+				{
+					if(note[4] != null) {
+						copiedNote = [newStrumTime, note[1], note[2], note[3], note[4]];
+					} else {
+						copiedNote = [newStrumTime, note[1], note[2], note[3]];
+					}	
+					_song.notes[curSection].sectionNotes.push(copiedNote);
+				}
+			}
+			updateGrid();
+		});
 
 		var clearSectionButton:FlxButton = new FlxButton(10, 210, "Clear", function()
 		{
