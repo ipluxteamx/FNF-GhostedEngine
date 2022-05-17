@@ -222,6 +222,10 @@ class FreeplayState extends MusicBeatState
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
+
+		FlxG.camera.zoom = 1.5;
+		FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.cubeOut});	
+
 		super.create();
 	}
 
@@ -292,8 +296,8 @@ class FreeplayState extends MusicBeatState
 		var accepted = controls.ACCEPT;
 		var space = FlxG.keys.justPressed.SPACE;
 		var ctrl = FlxG.keys.justPressed.CONTROL;
-		var e = FlxG.keys.justPressed.E;
-		var q = FlxG.keys.justPressed.E;
+		// var e = FlxG.keys.justPressed.E;
+		// var q = FlxG.keys.justPressed.E;
 
 		var shiftMult:Int = 1;
 		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
@@ -343,6 +347,8 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			FlxTween.tween(FlxG.camera, {zoom: 1.5}, 1, {ease: FlxEase.quadOut});
+
 			persistentUpdate = false;
 			if(colorTween != null) {
 				colorTween.cancel();
