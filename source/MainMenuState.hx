@@ -41,6 +41,8 @@ class MainMenuState extends MusicBeatState
 	public static var psychEngineVersion:String = '0.5.1'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
+        public static var ghostedEngine:String = "Ghosted Engine v1";
+
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
@@ -59,10 +61,14 @@ class MainMenuState extends MusicBeatState
 	];
 
 	var magenta:FlxSprite;
+
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
+
 	var bg:FlxSprite;
+
+        var engineText:FlxText;
 
 	override function create()
 	{
@@ -191,16 +197,28 @@ class MainMenuState extends MusicBeatState
 			menuItem.y = 60 + (i * 160);*/
 		}
 
-		FlxG.camera.follow(camFollowPos, null, 1);
+		FlxG.camera.follow(camFollowPos, LOCKON, 0.025);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Ghosted Engine (PE 5.1) v1", 12);
+                var bottomPanel:FlxSprite = new FlxSprite(0, FlxG.height - 100).makeGraphic(FlxG.width, 100, 0xFF000000);
+		add(bottomPanel);
+
+                bottomPanel.scrollFactor.set();
+
+		var versionShit:FlxText = new FlxText(20, FlxG.height - 35, 1000, "Friday Night Funkin' v" + Application.current.meta.get('version'), 16);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
+
+		engineText = new FlxText(0, FlxG.height - 35, 1000, ghostedEngine, 16);
+		engineText.scrollFactor.set();
+		engineText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(engineText);
+		engineText.x = (FlxG.width - engineText.width) - 20;
+
+                versionShit.borderSize = 1.5;
+		versionShit.borderQuality = 1;
+		engineText.borderSize = 1.5;
+		engineText.borderQuality = 1;
 
 		// NG.core.calls.event.logEvent('swag').send();
 
@@ -218,6 +236,9 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 		#end
+
+                FlxG.camera.zoom = 1.5;
+		FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.cubeOut});
 
 		super.create();
 	}
@@ -303,8 +324,12 @@ class MainMenuState extends MusicBeatState
 								switch (daChoice)
 								{
 									case 'story_mode':
+										FlxTween.cancelTweensOf(FlxG.camera);
+										FlxTween.tween(FlxG.camera, {zoom: 1.5}, 1, {ease: FlxEase.quadOut});
 										MusicBeatState.switchState(new StoryMenuState());
 									case 'freeplay':
+										FlxTween.cancelTweensOf(FlxG.camera);
+										FlxTween.tween(FlxG.camera, {zoom: 1.5}, 1, {ease: FlxEase.quadOut});
 										MusicBeatState.switchState(new FreeplayState());
 									#if MODS_ALLOWED
 									case 'mods':
