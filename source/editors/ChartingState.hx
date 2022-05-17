@@ -135,6 +135,7 @@ class ChartingState extends MusicBeatState
 	var curUndoIndex = 0;
 	var curRedoIndex = 0;
 	var _song:SwagSong;
+	var difficulty:String = 'normal';
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
@@ -306,6 +307,8 @@ class ChartingState extends MusicBeatState
 		quant.xAdd = -32;
 		quant.yAdd = 8;
 		add(quant);
+
+		difficulty = PlayState.storyDifficultyStr.toLowerCase();
 		
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		for (i in 0...(Note.ammo[_song.mania] * 2)){
