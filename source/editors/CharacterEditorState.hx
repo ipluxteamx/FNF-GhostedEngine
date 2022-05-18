@@ -33,6 +33,7 @@ import Character;
 import flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 import lime.system.Clipboard;
 import flixel.animation.FlxAnimation;
+import flixel.math.FlxPoint;
 
 #if MODS_ALLOWED
 import sys.FileSystem;
@@ -77,6 +78,9 @@ class CharacterEditorState extends MusicBeatState
 
 	var cameraFollowPointer:FlxSprite;
 	var healthBarBG:FlxSprite;
+
+	// The begining mouse location that all drag movements are in reference of
+	private var mouseLocation:FlxPoint;
 
 	override function create()
 	{
@@ -1188,9 +1192,55 @@ class CharacterEditorState extends MusicBeatState
 					genBoyOffsets();
 				}
 
-				var controlArray:Array<Bool> = [FlxG.keys.justPressed.LEFT, FlxG.keys.justPressed.RIGHT, FlxG.keys.justPressed.UP, FlxG.keys.justPressed.DOWN];
-				
-				
+				var mouseLoc = FlxG.mouse.getPosition();
+				try
+				{
+					if(!FlxG.mouse.overlaps(UI_box) && !FlxG.mouse.overlaps(UI_characterbox))
+					{
+						var xDiff:Int = Std.int(mouseLoc.x - mouseLocation.x);
+						var yDiff:Int = Std.int(mouseLoc.y - mouseLocation.y);
+
+					if(FlxG.mouse.justPressed)
+						{
+							mouseLocation = mouseLoc;
+						}
+						else if(FlxG.mouse.pressed && FlxG.mouse.justMoved)
+						{
+							// If you click during the transition, this sometimes crashes cause 
+							// Null object error
+							var xDiff:Int = Std.int(mouseLoc.x - mouseLocation.x);
+							var yDiff:Int = Std.int(mouseLoc.y - mouseLocation.y);
+
+							// Moves the entire character
+							if(FlxG.keys.pressed.SHIFT)
+							{
+								positionXStepper.value += xDiff;
+								positionYStepper.value += yDiff;
+								getEvent(FlxUINumericStepper.CHANGE_EVENT,positionXStepper,null);
+								getEvent(FlxUINumericStepper.CHANGE_EVENT,positionYStepper,null);
+							}
+							// Moves the animation
+							else
+							{
+								char.animationsArray[curAnim].offsets[0] -= xDiff;
+								char.animationsArray[curAnim].offsets[1] -= yDiff;
+								char.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
+								ghostChar.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
+							}
+
+							char.playAnim(char.animationsArray[curAnim].anim, false);
+							if(ghostChar.animation.curAnim != null && char.animation.curAnim != null && char.animation.curAnim.name == ghostChar.animation.curAnim.name) {
+								ghostChar.playAnim(char.animation.curAnim.name, false);
+							}
+							genBoyOffsets();
+							mouseLocation = mouseLoc;
+						}
+					}
+				}
+				catch(e)
+				{
+					trace("Temporary error caught");
+				}
 				
 				for (i in 0...controlArray.length) {
 					if(controlArray[i]) {
