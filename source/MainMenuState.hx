@@ -249,8 +249,8 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
-                FlxG.camera.zoom = 1.5;
-		FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.cubeOut});
+        FlxG.camera.zoom = 1.5;
+		FlxTween.tween(FlxG.camera, {zoom: 1}, 0.25, {ease: FlxEase.cubeOut});
 
 		super.create();
 	}
