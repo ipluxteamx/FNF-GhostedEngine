@@ -206,7 +206,8 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
-	public var cameraSpeed:Float = 1;
+	public var cameraSpeed:Float = 1.25;
+	public var canCameraMove:Bool = true;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	var dialogueJson:DialogueFile = null;
@@ -3460,6 +3461,7 @@ class PlayState extends MusicBeatState
 
 	var cameraTwn:FlxTween;
 	public function moveCamera(isDad:Bool, ?direction:String = null) {
+		if (!canCameraMove) return;
 		if (ClientPrefs.moveCameraInNoteDirection && direction == null) return;
 		var noteHitX:Float = 0;
 		var noteHitY:Float = 0;
@@ -4361,7 +4363,8 @@ class PlayState extends MusicBeatState
 			dad.playAnim(animToPlay, true);
 			dad.holdTimer = 0;
 		}
-		moveCamera(true, animToPlay);
+		if (ClientPrefs.moveCameraInNoteDirection)
+			moveCamera(true, animToPlay);
 
 		if (SONG.needsVoices)
 			vocals.volume = 1;
@@ -4483,6 +4486,19 @@ class PlayState extends MusicBeatState
 					}
 				});
 			}
+
+			var animToPlay:String = 'sing' + Note.keysShit.get(mania).get('anims')[note.noteData];
+
+			if(note.noteType == 'GF Sing') {
+				gf.playAnim(animToPlay, true);
+				gf.holdTimer = 0;
+			} else {
+				boyfriend.playAnim(animToPlay, true);
+				boyfriend.holdTimer = 0;
+			}
+			if (ClientPrefs.moveCameraInNoteDirection)
+				moveCamera(true, animToPlay);
+
 			note.wasGoodHit = true;
 			vocals.volume = 1;
 
