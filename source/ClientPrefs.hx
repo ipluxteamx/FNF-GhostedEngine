@@ -29,6 +29,8 @@ class ClientPrefs {
 	public static var healthBarAlpha:Float = 1;
 	public static var controllerMode:Bool = false;
 	public static var screenRes:String = '1280x720';
+	public static var laneUnderlayOpacity:Float = 0;
+	public static var fixedComboSprPos:Bool = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
@@ -207,6 +209,8 @@ class ClientPrefs {
 		FlxG.save.data.inputSystem = inputSystem;
 		FlxG.save.data.controllerMode = controllerMode;
 		FlxG.save.data.screenRes = screenRes;
+		FlxG.save.data.laneUnderlayOpacity = laneUnderlayOpacity;
+		FlxG.save.data.fixedComboSprPos = fixedComboSprPos;
 	
 		FlxG.save.flush();
 
@@ -333,9 +337,17 @@ class ClientPrefs {
 		}
 
 		if (FlxG.save.data.noAntimash != null)
-			{
-				noAntimash = FlxG.save.data.noAntimash;
-			}
+		{
+			noAntimash = FlxG.save.data.noAntimash;
+		}
+		if (FlxG.save.data.laneUnderlayOpacity != null)
+		{
+			laneUnderlayOpacity = FlxG.save.data.laneUnderlayOpacity;
+		}
+		if (FlxG.save.data.fixedComboSprPos != null)
+		{
+			fixedComboSprPos = FlxG.save.data.fixedComboSprPos;
+		}
 
 		var save:FlxSave = new FlxSave();
 		save.bind('controls_v2', 'ninjamuffin99');

@@ -88,6 +88,25 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		option.decimals = 1;
 		addOption(option);
+
+		var option:Option = new Option('Lane Underlay Opacity',
+			'How opaque should be a black underlay for note lanes.',
+			'laneUnderlayOpacity',
+			'percent',
+			0);
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
+
+		var option:Option = new Option('Fixed Combo Sprite Position',
+			'If checked, note judgement and combo count sprites will not move together with the camera',
+			'fixedComboSprPos',
+			'bool',
+			true);
+		addOption(option);
 		
 		#if !mobile
 		var option:Option = new Option('FPS Counter',
