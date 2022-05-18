@@ -882,7 +882,7 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.downScroll) strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
 
-		if (ClientPrefs.laneUnderlayOpacity > 0 && !ClientPrefs.maxOptimization) {
+		if (ClientPrefs.laneUnderlayOpacity > 0) {
 			playerLaneUnderlay = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 			playerLaneUnderlay.alpha = ClientPrefs.laneUnderlayOpacity;
 			playerLaneUnderlay.color = FlxColor.BLACK;
