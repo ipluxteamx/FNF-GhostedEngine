@@ -96,7 +96,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Move Camera On Note Direction', //Name
-			'If checked, the camera will move in the note's direction.', //Description
+			'If checked, the camera will move in the note direction.', //Description
 			'moveCameraInNoteDirection', //Save data variable name
 			'bool', //Variable type
 			true); //Default value
