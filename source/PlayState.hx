@@ -4352,7 +4352,9 @@ class PlayState extends MusicBeatState
 			char.holdTimer = 0;
 		}
 
-		if(daNote.noteType == 'GF Sing') {
+		var animToPlay:String = 'sing' + Note.keysShit.get(mania).get('anims')[note.noteData];
+
+		if(note.noteType == 'GF Sing') {
 			gf.playAnim(animToPlay, true);
 			gf.holdTimer = 0;
 		} else {

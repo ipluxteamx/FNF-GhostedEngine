@@ -243,13 +243,6 @@ class MainMenuState extends MusicBeatState
 		super.create();
 	}
 
-	override function beatHit()
-	{
-		super.beatHit();
-		if (curBeat % 4 == 0 && ClientPrefs.camZooms)
-			FlxG.camera.zoom = 1.015;
-	}
-
 	#if ACHIEVEMENTS_ALLOWED
 	// Unlocks "Freaky on a Friday Night" achievement
 	function giveAchievement() {
