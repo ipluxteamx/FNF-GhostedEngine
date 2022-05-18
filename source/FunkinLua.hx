@@ -1688,6 +1688,32 @@ class FunkinLua {
 			}
 		});
 
+		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
+			return Paths.getTextFromFile(path, ignoreModFolders);
+		});
+
+		//system functions
+		Lua_helper.add_callback(lua, "exitGame", function(code:Int = 0) {
+			Sys.exit(code);
+		});
+		Lua_helper.add_callback(lua, "getCPUTime", function() {
+			return Sys.cpuTime();
+		});
+		Lua_helper.add_callback(lua, "getEnvVariable", function(variable:String = '') {
+			return Sys.getEnv(variable);
+		});
+		Lua_helper.add_callback(lua, "getProgramPath", function() {
+			return Sys.programPath();
+		});
+		Lua_helper.add_callback(lua, "getSystemName", function() {
+			return Sys.systemName();
+		});
+		Lua_helper.add_callback(lua, "getUnixTime", function() {
+			return Sys.time();
+		});
+		Lua_helper.add_callback(lua, "getWorkingDirectory", function() {
+			return Sys.getCwd();
+		});
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
 		Lua_helper.add_callback(lua, "luaSpriteMakeGraphic", function(tag:String, width:Int, height:Int, color:String) {
