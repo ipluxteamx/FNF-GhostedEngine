@@ -101,6 +101,14 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.decimals = 1;
 		addOption(option);
 
+		var option:Option = new Option('Icon Bounce:',
+			'How should your icons bounce?',
+			'iconBounce',
+			'string',
+			'Default',
+			['Default', 'Rotative', 'None']);
+		addOption(option);
+
 		var option:Option = new Option('Fixed Combo Sprite Position',
 			'If checked, note judgement and combo count sprites will not move together with the camera',
 			'fixedComboSprPos',

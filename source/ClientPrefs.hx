@@ -33,6 +33,7 @@ class ClientPrefs {
 	public static var fixedComboSprPos:Bool = true;
 	public static var maxOptimization:Bool = false;
 	public static var moveCameraInNoteDirection:Bool = false;
+	public static var iconBounce:String = 'Default';
 
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
@@ -216,6 +217,7 @@ class ClientPrefs {
 		FlxG.save.data.fixedComboSprPos = fixedComboSprPos;
 		FlxG.save.data.maxOptimization = maxOptimization;
 		FlxG.save.data.moveCameraInNoteDirection = moveCameraInNoteDirection;
+		FlxG.save.data.iconBounce = iconBounce;
 
 		FlxG.save.flush();
 
@@ -358,6 +360,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.moveCameraInNoteDirection != null) {
 			moveCameraInNoteDirection = FlxG.save.data.moveCameraInNoteDirection;
+		}
+		if(FlxG.save.data.iconBounce != null) {
+			iconBounce = FlxG.save.data.iconBounce;
 		}
 
 		var save:FlxSave = new FlxSave();
