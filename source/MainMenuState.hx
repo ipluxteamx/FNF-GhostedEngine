@@ -62,6 +62,10 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 
+	var randomTxt:FlxText;
+
+	var isTweening:Bool = false;
+
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
@@ -199,10 +203,11 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, LOCKON, 0.025);
 
-                var bottomPanel:FlxSprite = new FlxSprite(0, FlxG.height - 100).makeGraphic(FlxG.width, 100, 0xFF000000);
+        var bottomPanel:FlxSprite = new FlxSprite(0, FlxG.height - 100).makeGraphic(FlxG.width, 100, 0xFF000000);
 		add(bottomPanel);
 
-                bottomPanel.scrollFactor.set();
+		bottomPanel.alpha = 0.5;
+        bottomPanel.scrollFactor.set();
 
 		var versionShit:FlxText = new FlxText(20, FlxG.height - 35, 1000, "Friday Night Funkin' v" + Application.current.meta.get('version'), 16);
 		versionShit.scrollFactor.set();
@@ -215,10 +220,17 @@ class MainMenuState extends MusicBeatState
 		add(engineText);
 		engineText.x = (FlxG.width - engineText.width) - 20;
 
-                versionShit.borderSize = 1.5;
+		randomTxt = new FlxText(20, FlxG.height - 80, 1000, "", 26);
+		randomTxt.scrollFactor.set();
+		randomTxt.setFormat("VCR OSD Mono", 26, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(randomTxt);
+
+        versionShit.borderSize = 1.5;
 		versionShit.borderQuality = 1;
 		engineText.borderSize = 1.5;
 		engineText.borderQuality = 1;
+
+		randomTxt.borderSize = 2;
 
 		// NG.core.calls.event.logEvent('swag').send();
 
@@ -266,6 +278,20 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
+			if (isTweening)
+			{
+				randomTxt.screenCenter(X);
+				timer = 0;
+			}
+			else
+			{
+				randomTxt.screenCenter(X);
+				timer += elapsed;
+				if (timer >= 3)
+				{
+					changeText();
+				}
+			}
 			if (controls.UI_UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -307,7 +333,7 @@ class MainMenuState extends MusicBeatState
 							FlxTween.tween(magenta, {angle: 45}, 0.8, {ease: FlxEase.expoIn});
 							FlxTween.tween(bg, {alpha: 0}, 0.8, {ease: FlxEase.expoIn});
 							FlxTween.tween(magenta, {alpha: 0}, 0.8, {ease: FlxEase.expoIn});
-							FlxTween.tween(spr, {alpha: 0}, 0.3, {
+							FlxTween.tween(spr, {alpha: 0}, 0.4, {
 								ease: FlxEase.quadOut,
 								onComplete: function(twn:FlxTween)
 								{
@@ -362,6 +388,46 @@ class MainMenuState extends MusicBeatState
 		{
 			spr.screenCenter(X);
 			spr.x += menuJSON.menuItemsX;
+		});
+	}
+
+	function changeText()
+	{
+		var selectedText:String = '';
+		var textArray:Array<String> = CoolUtil.coolTextFile(Paths.txt('inGameText'));
+
+		#if MODS_ALLOWED
+		textArray.insert(0, Paths.mods('data/inGameText'));
+		#end
+
+		randomTxt.alpha = 1;
+		isTweening = true;
+		selectedText = textArray[FlxG.random.int(0, (textArray.length - 1))].replace('--', '\n');
+		FlxTween.tween(randomTxt, {alpha: 0}, 1, {
+			ease: FlxEase.linear,
+			onComplete: function(shit:FlxTween)
+			{
+				if (selectedText != lastString)
+				{
+					randomTxt.text = selectedText;
+					lastString = selectedText;
+				}
+				else
+				{
+					selectedText = textArray[FlxG.random.int(0, (textArray.length - 1))].replace('--', '\n');
+					randomTxt.text = selectedText;
+				}
+
+				randomTxt.alpha = 0;
+
+				FlxTween.tween(randomTxt, {alpha: 1}, 1, {
+					ease: FlxEase.linear,
+					onComplete: function(shit:FlxTween)
+					{
+						isTweening = false;
+					}
+				});
+			}
 		});
 	}
 
