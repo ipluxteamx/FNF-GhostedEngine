@@ -72,7 +72,8 @@ class MainMenuState extends MusicBeatState
 
 	var bg:FlxSprite;
 
-        var engineText:FlxText;
+    var engineText:FlxText;
+	var lastString:String = '';
 
 	override function create()
 	{
@@ -462,7 +463,7 @@ class MainMenuState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
-		if (curBeat % 4 == 0 && ClientPrefs.camZooms)
-			FlxG.camera.zoom = 1.015;
+		if (FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 1 == 0)
+			FlxG.camera.zoom += 0.015;
 	}
 }
