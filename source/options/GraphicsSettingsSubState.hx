@@ -88,6 +88,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 		*/
 
+		var option:Option = new Option('Max Optimization', //Name
+			'If checked, hides everything except the UI.', //Description
+			'maxOptimization', //Save data variable name
+			'bool', //Variable type
+			false); //Default value
+		addOption(option);
+
 		super();
 	}
 

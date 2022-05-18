@@ -31,6 +31,7 @@ class ClientPrefs {
 	public static var screenRes:String = '1280x720';
 	public static var laneUnderlayOpacity:Float = 0;
 	public static var fixedComboSprPos:Bool = true;
+	public static var maxOptimization:Bool = false;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
@@ -211,7 +212,8 @@ class ClientPrefs {
 		FlxG.save.data.screenRes = screenRes;
 		FlxG.save.data.laneUnderlayOpacity = laneUnderlayOpacity;
 		FlxG.save.data.fixedComboSprPos = fixedComboSprPos;
-	
+		FlxG.save.data.maxOptimization = maxOptimization;
+
 		FlxG.save.flush();
 
 		var save:FlxSave = new FlxSave();
@@ -347,6 +349,9 @@ class ClientPrefs {
 		if (FlxG.save.data.fixedComboSprPos != null)
 		{
 			fixedComboSprPos = FlxG.save.data.fixedComboSprPos;
+		}
+		if(FlxG.save.data.maxOptimization != null) {
+			maxOptimization = FlxG.save.data.maxOptimization;
 		}
 
 		var save:FlxSave = new FlxSave();
