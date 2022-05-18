@@ -47,7 +47,17 @@ class ClientPrefs {
 		'instakill' => false,
 		'practice' => false,
 		'botplay' => false,
-		'opponentplay' => false
+		'opponentplay' => false,
+
+		// difficulty modifiers
+		'noHolds' => false, // removes all holds from the chart
+		'noChords' => false, // removes all jumps, hands, and quads from the chart
+		'jackThreshold' => '16th',
+
+		// other chart modifiers
+		'mirror' => false,
+		'shuffle' => false,
+		'right' => false
 	];
 	public static var inputSystem:String = 'Native';
 

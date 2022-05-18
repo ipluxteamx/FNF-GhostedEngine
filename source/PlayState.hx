@@ -129,6 +129,7 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public var allowScoring:Bool = true;
 
 	public var vocals:FlxSound;
 
@@ -1896,6 +1897,24 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if(ClientPrefs.getGameplaySetting("noHolds",false))allowScoring=false;
+
+		var transformation:Array<Int> = [
+			0,
+			1,
+			2,
+			3
+		];
+
+		if(ClientPrefs.getGameplaySetting("right",false)){
+			transformation = [
+				2,
+				0,
+				3,
+				1
+			];
+		}
+
 		for (section in noteData)
 		{
 			for (songNotes in section.sectionNotes)
@@ -1906,9 +1925,11 @@ class PlayState extends MusicBeatState
 				var gottaHitNote:Bool = section.mustHitSection;
 
 				if (songNotes[1] > (Note.ammo[mania] - 1))
-				{
 					gottaHitNote = !section.mustHitSection;
-				}
+
+				daNoteData = transformation[daNoteData];
+				if(ClientPrefs.getGameplaySetting('shuffle', false))
+					daNoteData = FlxG.random.int(0, 3);
 
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
@@ -1930,7 +1951,12 @@ class PlayState extends MusicBeatState
 				susLength = susLength / Conductor.stepCrochet;
 				unspawnNotes.push(swagNote);
 
-				var floorSus:Int = Math.floor(susLength);
+				if(ClientPrefs.getGameplaySetting("noHolds", false)){
+					susLength=0;
+					swagNote.sustainLength = 0;
+				}
+
+				var floorSus:Int = Math.floor(susLength); // dead memes
 
 				var type = 0;
 				if(floorSus > 0) {
@@ -2008,6 +2034,103 @@ class PlayState extends MusicBeatState
 		// playerCounter += 1;
 
 		unspawnNotes.sort(sortByShit);
+
+		var removing:Array<Note> = [];
+
+		if(ClientPrefs.getGameplaySetting("noChords", false)){
+			var pastBFNotes:Array<Null<Note>> = [null,null,null,null];
+			var pastDadNotes:Array<Null<Note>> = [null,null,null,null];
+			for(note in unspawnNotes){
+				if(removing.contains(note))continue;
+				if(note.isSustainNote)continue;
+
+				var array = pastBFNotes;
+				if(!note.mustPress)array = pastDadNotes;
+
+				var remove:Bool=false;
+				for(otherNote in array){
+					if(otherNote!=null && note!=null){
+						if(Math.abs(otherNote.strumTime-note.strumTime) < 4){
+							removing.push(note);
+							allowScoring=false; // removed a jump, so no more scoring!!
+							trace("eradicate jump");
+							break;
+						}
+					}
+				}
+				if(!removing.contains(note))
+					array[note.noteData]=note;
+
+			}
+		}
+
+		if(ClientPrefs.getGameplaySetting("noJacks",false)){
+			var jackThreshold:Float = 16;
+			//["4th", "8th", "12th", "16th", "24th", "32nd", "48th", "64th", "192nd"]
+			switch(ClientPrefs.getGameplaySetting("jackThreshold","4th")){
+				case '4th':
+					jackThreshold /= 4;
+				case '8th':
+					jackThreshold /= 8;
+				case '12th':
+					jackThreshold /= 12;
+				case '16th':
+					jackThreshold /= 16;
+				case '24th':
+					jackThreshold /= 24;
+				case '32nd':
+					jackThreshold /= 32;
+				case '48th':
+					jackThreshold /= 48;
+				case '64th':
+					jackThreshold /= 64;
+				case '192nd':
+					jackThreshold /= 192;
+				default:
+					jackThreshold /= 16;
+			}
+			var pastBFNotes:Array<Null<Note>> = [null,null,null,null];
+			var pastDadNotes:Array<Null<Note>> = [null,null,null,null];
+			for(note in unspawnNotes){
+				if(removing.contains(note))continue;
+				if(note.isSustainNote)continue;
+				var array = pastBFNotes;
+				if(!note.mustPress)array = pastDadNotes;
+
+				var remove:Bool=false;
+				var prevNote = array[note.noteData];
+				if(prevNote!=null && note!=null){
+					if(Math.abs(prevNote.strumTime-note.strumTime) <= (Conductor.getCrochet(note.strumTime)/4) * jackThreshold){
+						removing.push(note);
+						allowScoring=false; // removed a jack, so no more scoring!
+						trace("eradicate jack");
+					}
+				}
+
+				if(!removing.contains(note)){
+					if(!note.mustPress)pastDadNotes[note.noteData]=note; else pastBFNotes[note.noteData]=note;
+				}
+
+			}
+		}
+
+		for(note in unspawnNotes){ // because eradicating jacks caused issues w/ holds!!
+			if(note.isSustainNote){
+				if(note.prevNote==null || removing.contains(note.prevNote) || !note.prevNote.alive){
+					removing.push(note);
+				}
+			}
+		}
+
+		for(note in removing){
+			unspawnNotes.remove(note);
+			note.kill();
+			note.destroy();
+			note.active = false;
+			note.visible = false;
+		}
+		unspawnNotes.sort(sortByShit);
+
 		if(eventNotes.length > 1) { //No need to sort if there's a single one or none at all
 			eventNotes.sort(sortByTime);
 		}
@@ -2865,6 +2988,9 @@ class PlayState extends MusicBeatState
 
 				paused = true;
 
+				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
+
+
 				vocals.stop();
 				FlxG.sound.music.stop();
 
@@ -3416,7 +3542,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		if(ret != FunkinLua.Function_Stop && !transitioning) {
-			if (SONG.validScore)
+			if (SONG.validScore && allowScoring)
 			{
 				#if !switch
 				var percent:Float = ratingPercent;
@@ -3452,7 +3578,7 @@ class PlayState extends MusicBeatState
 					if(!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false)) {
 						StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
 
-						if (SONG.validScore)
+						if (SONG.validScore && allowScoring)
 						{
 							Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty);
 						}
@@ -4220,7 +4346,8 @@ class PlayState extends MusicBeatState
 				//var ms:Float = note.strumTime - Conductor.songPosition;
 				//trace(ms);
 			}
-			health += note.hitHealth * healthGain;
+			if(!isDead)
+				health += note.hitHealth * healthGain;
 
 			if(!note.noAnimation) {
 				var daAlt = '';

@@ -58,13 +58,13 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		}
 		optionsArray.push(option);
 
-		var option:GameplayOption = new GameplayOption('Playback Rate', 'songspeed', 'float', 1);
+		/*var option:GameplayOption = new GameplayOption('Playback Rate', 'songspeed', 'float', 1);
 		option.scrollSpeed = 1;
 		option.minValue = 0.5;
 		option.maxValue = 2.5;
 		option.changeValue = 0.1;
 		option.displayFormat = '%vX';
-		optionsArray.push(option);
+		optionsArray.push(option);*/
 
 		var option:GameplayOption = new GameplayOption('Health Gain Multiplier', 'healthgain', 'float', 1);
 		option.scrollSpeed = 2.5;
@@ -82,17 +82,18 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		option.displayFormat = '%vX';
 		optionsArray.push(option);
 
-		var option:GameplayOption = new GameplayOption('Mirror Mode', 'mirror', 'bool', false);
-		optionsArray.push(option);
+		optionsArray.push(new GameplayOption('Instakill on Miss', 'instakill', 'bool', false));
+		optionsArray.push(new GameplayOption('Practice Mode', 'practice', 'bool', false));
+		optionsArray.push(new GameplayOption('Botplay', 'botplay', 'bool', false));
+		optionsArray.push(new GameplayOption('No Holds', 'noHolds', 'bool', false));
+		optionsArray.push(new GameplayOption('No Chords', 'noChords', 'bool', false));
+		optionsArray.push(new GameplayOption('No Jacks', 'noJacks', 'bool', false));
+		optionsArray.push(new GameplayOption('Jack Threshold', 'jackThreshold', 'string', '16th', ["4th", "8th", "12th", "16th", "24th", "32nd", "48th", "64th", "192nd"]));
 
-		var option:GameplayOption = new GameplayOption('Instakill on Miss', 'instakill', 'bool', false);
-		optionsArray.push(option);
-
-		var option:GameplayOption = new GameplayOption('Practice Mode', 'practice', 'bool', false);
-		optionsArray.push(option);
-
-		var option:GameplayOption = new GameplayOption('Botplay', 'botplay', 'bool', false);
-		optionsArray.push(option);
+		// other chart modifiers
+		optionsArray.push(new GameplayOption('Mirror Mode', 'mirror', 'bool', false));
+		optionsArray.push(new GameplayOption('Shuffle', 'shuffle', 'bool', false));
+		optionsArray.push(new GameplayOption('Right', 'right', 'bool', false));
 	}
 
 	public function getOptionByName(name:String)
