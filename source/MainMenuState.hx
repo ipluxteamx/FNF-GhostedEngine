@@ -265,6 +265,7 @@ class MainMenuState extends MusicBeatState
 	#end
 
 	var selectedSomethin:Bool = false;
+	var timer:Float = 0;
 
 	override function update(elapsed:Float)
 	{
