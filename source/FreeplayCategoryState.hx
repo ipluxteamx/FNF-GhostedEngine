@@ -45,7 +45,7 @@ class FreeplayCategoryState extends MusicBeatState
 
 		            #if desktop
 		            // Updating Discord Rich Presence
-		            DiscordClient.changePresence("In Freeplay Category", null);
+		            DiscordClient.changePresence("In Freeplay Categories", null);
 		            #end
                   
                 bg = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
