@@ -32,6 +32,8 @@ class ClientPrefs {
 	public static var laneUnderlayOpacity:Float = 0;
 	public static var fixedComboSprPos:Bool = true;
 	public static var maxOptimization:Bool = false;
+	public static var moveCameraInNoteDirection:Bool = false;
+
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
@@ -213,6 +215,7 @@ class ClientPrefs {
 		FlxG.save.data.laneUnderlayOpacity = laneUnderlayOpacity;
 		FlxG.save.data.fixedComboSprPos = fixedComboSprPos;
 		FlxG.save.data.maxOptimization = maxOptimization;
+		FlxG.save.data.moveCameraInNoteDirection = moveCameraInNoteDirection;
 
 		FlxG.save.flush();
 
@@ -352,6 +355,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.maxOptimization != null) {
 			maxOptimization = FlxG.save.data.maxOptimization;
+		}
+		if(FlxG.save.data.moveCameraInNoteDirection != null) {
+			moveCameraInNoteDirection = FlxG.save.data.moveCameraInNoteDirection;
 		}
 
 		var save:FlxSave = new FlxSave();
