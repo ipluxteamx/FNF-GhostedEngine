@@ -206,7 +206,7 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
-	public var cameraSpeed:Float = 1.25;
+	public var cameraSpeed:Float = 1.75;
 	public var canCameraMove:Bool = true;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
@@ -3468,13 +3468,13 @@ class PlayState extends MusicBeatState
 		if (ClientPrefs.moveCameraInNoteDirection) {
 			switch (direction) {
 				case 'singUP':
-					noteHitY -= 80;
+					noteHitY -= 40;
 				case 'singDOWN':
-					noteHitY += 80;
+					noteHitY += 40;
 				case 'singLEFT':
-					noteHitX -= 80;
+					noteHitX -= 40;
 				case 'singRIGHT':
-					noteHitX += 80;
+					noteHitX += 40;
 			}
 		}
 		if(isDad)
