@@ -32,7 +32,7 @@ using StringTools;
 typedef MenuData =
 {	
 	menuItemsAlignement:String,
-	menuItemsX:Int,
+	menuItemsX:Null<Int>,
 	backgroundSprite:String
 }
 
@@ -156,7 +156,7 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
+			var menuItem:FlxSprite = new FlxSprite(menuItemsX, (i * 140)  + offset);
 			menuItem.scale.x = scale;
 			menuItem.scale.y = scale;
 			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
@@ -387,8 +387,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			spr.screenCenter(X);
-			spr.x += menuJSON.menuItemsX;
+			if (menuJSON.menuItemsX == 640 || menuJSON.menuItemsX == null) spr.screenCenter(X) else spr.x = menuJSON.menuItemsX;
 		});
 	}
 
