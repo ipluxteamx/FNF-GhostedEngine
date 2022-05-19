@@ -36,7 +36,6 @@ import haxe.xml.Access;
 import openfl.system.System;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.effects.chainable.*;
-import flixel.addons.effects.chainable.FlxGlitchDirection;
 import flixel.addons.effects.chainable.FlxGlitchEffect;
 #if sys
 import sys.FileSystem;
@@ -1830,9 +1829,9 @@ class FunkinLua {
 		
 		//SHADER SHIT
 		
-		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, waveTimer:Int = 0, Waves:Float = 5) { //waterrrr
+		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, Waves:Float = 5) { //waterrrr
 			
-			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(Waves, waveTimer));
+			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(Waves));
 			
 		});
 
@@ -1918,7 +1917,7 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "addOutlineEffect", function(camera:String, color:FlxColor = 0xFFFFFFFF, width:Float = 1, height:Float = 1) {
 			
-			PlayState.instance.addShaderToCamera(camera, new BloomEffect(color, width, height));
+			PlayState.instance.addShaderToCamera(camera, new OutlineEffect(color, width, height));
 			
 		});
 
