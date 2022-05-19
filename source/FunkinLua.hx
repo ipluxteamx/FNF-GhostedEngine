@@ -37,6 +37,7 @@ import openfl.system.System;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.effects.chainable.*;
 import flixel.addons.effects.chainable.FlxGlitchDirection;
+import flixel.addons.effects.chainable.FlxGlitchEffect;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
