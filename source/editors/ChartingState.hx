@@ -142,6 +142,8 @@ class ChartingState extends MusicBeatState
 	var curSelectedNote:Array<Dynamic> = null;
 
 	var tempBpm:Float = 0;
+	var lastNoteData:Float;
+	var lastNoteStrum:Float;
 
 	var vocals:FlxSound = null;
 

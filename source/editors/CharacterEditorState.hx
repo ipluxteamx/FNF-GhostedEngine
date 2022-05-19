@@ -1242,6 +1242,7 @@ class CharacterEditorState extends MusicBeatState
 					trace("Temporary error caught");
 				}
 				
+				var controlArray:Array<Bool> = [FlxG.keys.justPressed.LEFT, FlxG.keys.justPressed.RIGHT, FlxG.keys.justPressed.UP, FlxG.keys.justPressed.DOWN];
 				for (i in 0...controlArray.length) {
 					if(controlArray[i]) {
 						var holdShift = FlxG.keys.pressed.SHIFT;
