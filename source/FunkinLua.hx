@@ -35,7 +35,7 @@ import flixel.math.FlxRect;
 import haxe.xml.Access;
 import openfl.system.System;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.effects.Chainable;
+import flixel.addons.effects.chainable.*;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
