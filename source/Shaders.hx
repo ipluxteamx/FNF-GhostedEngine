@@ -50,10 +50,11 @@ class BuildingShader extends FlxShader
 }
 
 class DisplaceEffect {
+  public var Waves:Float = 5;
   public var shader:DisplaceShader = new DisplaceShader(Waves);
   public var waveTimer:Float = 0;
 
-  public function new(Waves:Float = 5){
+  public function new(){
     shader.waves.value = [Waves];
   }
 
@@ -91,7 +92,7 @@ class DisplaceShader extends FlxShader
         }'
     )
 
-    public function new(Waves:Float = 5)
+    public function new()
     {
         super();
         // this.waves.value = [Waves];
