@@ -91,7 +91,7 @@ class DisplaceShader extends FlxShader
         }'
     )
 
-    public function new(Waves:Float)
+    public function new(Waves:Float = 5)
     {
         super();
         // this.waves.value = [Waves];
@@ -526,12 +526,6 @@ class GreyscaleShader extends FlxShader{
 	
 	
 }
-
-
-
-
-
-
 
 class GrainEffect extends Effect {
 	
