@@ -1829,9 +1829,9 @@ class FunkinLua {
 		
 		//SHADER SHIT
 		
-		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, Waves:Float = 5) { //waterrrr
+		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String) { //waterrrr
 			
-			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(Waves));
+			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect());
 			
 		});
 
