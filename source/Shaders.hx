@@ -51,7 +51,7 @@ class BuildingShader extends FlxShader
 
 class DisplaceEffect {
   public var Waves:Float = 5;
-  public var shader:DisplaceShader = new DisplaceShader(Waves);
+  public var shader:DisplaceShader = new DisplaceShader();
   public var waveTimer:Float = 0;
 
   public function new(){
