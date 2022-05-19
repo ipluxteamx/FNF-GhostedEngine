@@ -53,7 +53,7 @@ class DisplaceEffect {
   public var shader:DisplaceShader = new DisplaceShader();
   public var waveTimer:Float = 0;
 
-  public function new(){
+  public function new(Waves:Float = 5){
     shader.waves.value = [Waves];
   }
 

@@ -35,7 +35,7 @@ import flixel.math.FlxRect;
 import haxe.xml.Access;
 import openfl.system.System;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.effects.chainable;
+import flixel.addons.effects.Chainable;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -1828,9 +1828,9 @@ class FunkinLua {
 		
 		//SHADER SHIT
 		
-		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, intensity:Int = 80) { //waterrrr
+		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, intensity:Int = 80, Waves:Float = 5) { //waterrrr
 			
-			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(intensity));
+			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(intensity, Waves));
 			
 		});
 
