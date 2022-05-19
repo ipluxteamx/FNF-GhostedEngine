@@ -8,7 +8,7 @@ import djFlixel.gfx.TextBouncer;
 import djFlixel.gfx.pal.Pal_CPCBoy;
 import flixel.util.FlxTimer;
 
-class PlayState extends FlxState
+class GhostedTeamIntro extends FlxState
 {
 	override public function create()
 	{
