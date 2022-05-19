@@ -36,6 +36,7 @@ import haxe.xml.Access;
 import openfl.system.System;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.effects.chainable.*;
+import flixel.addons.effects.chainable.FlxGlitchDirection;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -1828,9 +1829,9 @@ class FunkinLua {
 		
 		//SHADER SHIT
 		
-		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, intensity:Int = 80, Waves:Float = 5) { //waterrrr
+		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, waveTimer:Int = 0, Waves:Float = 5) { //waterrrr
 			
-			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(intensity, Waves));
+			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(Waves, waveTimer));
 			
 		});
 
@@ -1922,13 +1923,13 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "addFlxGlitchEffect", function(strength:Int = 4, size:Int = 1, delay:Float = 0.05, direction:FlxGlitchDirection = HORIZONTAL) { //unfortunately i cant put a cam on this method
 			
-			FlxGlitchEffect.new(strength, size, delay, direction);
+			new flixel.addons.effects.chainable.FlxGlitchEffect(strength, size, delay, direction);
 			
 		});
 
 		Lua_helper.add_callback(lua, "addRainbowEffect", function(alpha:Float = 1, brightness:Float = 1, speed:Float = 5, startHue:Int = 0) { //i cant put a cam on this method either
 			
-			FlxRainbowEffect.new(alpha, brightness, speed, startHue);
+			new flixel.addons.effects.chainable.FlxRainbowEffect(alpha, brightness, speed, startHue);
 			
 		});
 

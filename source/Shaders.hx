@@ -14,7 +14,7 @@ typedef ShaderEffect = {
   var shader:Dynamic;
 }
 
-class BuildingEffect {
+class BuildingEffect extends Effect {
   public var shader:BuildingShader = new BuildingShader();
   public function new(){
     shader.alphaShit.value = [0];
@@ -49,20 +49,21 @@ class BuildingShader extends FlxShader
   }
 }
 
-class DisplaceEffect {
+class DisplaceEffect extends Effect {
   public var Waves:Float = 5;
   public var shader:DisplaceShader = new DisplaceShader();
   public var waveTimer:Float = 0;
 
   public function new(){
     shader.waves.value = [Waves];
+	PlayState.instance.shaderUpdates.push(update);
   }
 
   public function update(elapsed:Float):Void {
-	_waveTimer += elapsed;
-	if (_waveTimer > Math.PI)
-		_waveTimer -= Math.PI;
-	shader.uTime.value = [_waveTimer];
+	waveTimer += elapsed;
+	if (waveTimer > Math.PI)
+		waveTimer -= Math.PI;
+	shader.uTime.value = [waveTimer];
   }
 }
 
@@ -103,13 +104,11 @@ class DisplaceShader extends FlxShader
 class OutlineEffect extends Effect
 {
 	
-	public var shader:OutlineShader;
+	public var shader:OutlineShader = new OutlineShader();
 
 	public function new(color:FlxColor = 0xFFFFFFFF, width:Float = 1, height:Float = 1) {
-		shader = new OutlineShader();
-
-		this.color.value = [color.red, color.green, color.blue, color.alpha];
-		this.size.value = [width, height];
+		shader.color.value = [color.red, color.green, color.blue, color.alpha];
+		shader.size.value = [width, height];
 	}
 	
 	
