@@ -1914,6 +1914,12 @@ class FunkinLua {
 			
 		});
 
+		Lua_helper.add_callback(lua, "addOutlineEffect", function(camera:String, color:FlxColor = 0xFFFFFFFF, width:Float = 1, height:Float = 1) {
+			
+			PlayState.instance.addShaderToCamera(camera, new BloomEffect(color, width, height);
+			
+		});
+
 		Lua_helper.add_callback(lua, "addFlxGlitchEffect", function(strength:Int = 4, size:Int = 1, delay:Float = 0.05, direction:FlxGlitchDirection = HORIZONTAL) { //unfortunately i cant put a cam on this method
 			
 			FlxGlitchEffect.new(strength, size, delay, direction);
