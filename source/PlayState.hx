@@ -1965,7 +1965,9 @@ class PlayState extends MusicBeatState
 				var gottaHitNote:Bool = section.mustHitSection;
 
 				if (songNotes[1] > (Note.ammo[mania] - 1))
+				{
 					gottaHitNote = !section.mustHitSection;
+				}
 
 				daNoteData = transformation[daNoteData];
 				if(ClientPrefs.getGameplaySetting('shuffle', false))
