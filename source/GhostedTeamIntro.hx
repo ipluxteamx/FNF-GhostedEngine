@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import flixel.util.FlxColor;
 import djFlixel.*;
 import djFlixel.gfx.TextBouncer;
 import djFlixel.gfx.pal.Pal_CPCBoy;
