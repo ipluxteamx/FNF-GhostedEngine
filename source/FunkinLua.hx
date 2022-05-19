@@ -1916,7 +1916,7 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "addOutlineEffect", function(camera:String, color:FlxColor = 0xFFFFFFFF, width:Float = 1, height:Float = 1) {
 			
-			PlayState.instance.addShaderToCamera(camera, new BloomEffect(color, width, height);
+			PlayState.instance.addShaderToCamera(camera, new BloomEffect(color, width, height));
 			
 		});
 
