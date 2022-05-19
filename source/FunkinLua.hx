@@ -35,6 +35,7 @@ import flixel.math.FlxRect;
 import haxe.xml.Access;
 import openfl.system.System;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.effects.chainable;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -1827,6 +1828,12 @@ class FunkinLua {
 		
 		//SHADER SHIT
 		
+		Lua_helper.add_callback(lua, "addDisplaceEffect", function(camera:String, intensity:Int = 80) { //waterrrr
+			
+			PlayState.instance.addShaderToCamera(camera, new DisplaceEffect(intensity));
+			
+		});
+
 		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String,chromeOffset:Float = 0.005) {
 			
 			PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
@@ -1906,6 +1913,19 @@ class FunkinLua {
 			PlayState.instance.addShaderToCamera(camera, new BloomEffect(blurSize/512.0,intensity));
 			
 		});
+
+		Lua_helper.add_callback(lua, "addFlxGlitchEffect", function(strength:Int = 4, size:Int = 1, delay:Float = 0.05, direction:FlxGlitchDirection = HORIZONTAL) { //unfortunately i cant put a cam on this method
+			
+			FlxGlitchEffect.new(strength, size, delay, direction);
+			
+		});
+
+		Lua_helper.add_callback(lua, "addRainbowEffect", function(alpha:Float = 1, brightness:Float = 1, speed:Float = 5, startHue:Int = 0) { //i cant put a cam on this method either
+			
+			FlxRainbowEffect.new(alpha, brightness, speed, startHue);
+			
+		});
+
 		Lua_helper.add_callback(lua, "clearEffects", function(camera:String) {
 			PlayState.instance.clearShaderFromCamera(camera);
 		});
