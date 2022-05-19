@@ -30,33 +30,7 @@ class GhostedTeamIntroState extends FlxState
             });
         });
 
-
-        var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
-
-		#if mobile
-		for (touch in FlxG.touches.list)
-		{
-			if (touch.justPressed)
-			{
-				pressedEnter = true;
-			}
-		}
-		#end
-
-		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
-
-		if (gamepad != null)
-		{
-			if (gamepad.justPressed.START)
-				pressedEnter = true;
-
-			#if switch
-			if (gamepad.justPressed.B)
-				pressedEnter = true;
-			#end
-		}
-
-        if (pressedEnter)
+        if (FlxG.keys.justPressed.ENTER)
             FlxG.switchState(new TitleState());
 	}
 }
