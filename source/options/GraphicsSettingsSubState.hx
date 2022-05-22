@@ -53,18 +53,6 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeAntiAliasing; //Changing onChange is only needed if you want to make a special interaction after it changes the value
 		addOption(option);
 
-		var option:Option = new Option('Camera Speed',
-			"How speedy should the camera be",
-			'cameraSpeed',
-			'float',
-			2);
-		addOption(option);
-
-		option.scrollSpeed = 5;
-		option.changeValue = 0.1;
-		option.minValue = 0.25;
-		option.maxValue = 10;
-
 		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:Option = new Option('Framerate',
 			"Pretty self explanatory, isn't it?",
@@ -107,13 +95,12 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			false); //Default value
 		addOption(option);
 
-		/* bloody hell mate crispity mate
 		var option:Option = new Option('Move Camera On Note Direction', //Name
 			'If checked, the camera will move in the note direction.', //Description
 			'moveCameraInNoteDirection', //Save data variable name
 			'bool', //Variable type
 			true); //Default value
-		addOption(option);*/
+		addOption(option);
 
 		super();
 	}

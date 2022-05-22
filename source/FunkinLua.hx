@@ -1847,12 +1847,6 @@ class FunkinLua {
 			
 		});
 
-		Lua_helper.add_callback(lua, "addColorSwapEffect", function(camera:String) {
-			
-			PlayState.instance.addShaderToCamera(camera, new ColorSwapShader());
-			
-		});
-
 		Lua_helper.add_callback(lua, "addRaymarchEffect", function(camera:String) {
 			
 			PlayState.instance.addShaderToCamera(camera, new RaymarchEffect());
