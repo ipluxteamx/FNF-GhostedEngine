@@ -206,7 +206,7 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
-	public var cameraSpeed:Float = 1.75;
+	public var cameraSpeed:Float = 2;
 	public var canCameraMove:Bool = true;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
@@ -1892,7 +1892,7 @@ class PlayState extends MusicBeatState
 
 		if (SONG.needsVoices)
 			//vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song, (SONG.specialAudioName == null ? storyDifficultyText.toLowerCase() : SONG.specialAudioName)));
+			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song, (SONG.specialAudioName == null ? CoolUtil.difficulties[storyDifficulty].toLowerCase() : SONG.specialAudioName)));
 		else
 			vocals = new FlxSound();
 
@@ -2585,7 +2585,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if(!inCutscene) {
-			var lerpVal:Float = CoolUtil.boundTo(elapsed * 2.4 * cameraSpeed, 0, 1);
+			var lerpVal:Float = CoolUtil.boundTo(elapsed * 2.4 * ClientPrefs.cameraSpeed, 0, 1);
 			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 			if(!startingSong && !endingSong && boyfriend.animation.curAnim.name.startsWith('idle')) {
 				boyfriendIdleTime += elapsed;
@@ -2602,9 +2602,9 @@ class PlayState extends MusicBeatState
 		fakeHealth = FlxMath.lerp(fakeHealth, health, CoolUtil.boundTo(elapsed * 20, 0, 1));
 
 		if(ratingName == '?') {
-			scoreTxt.text = 'Score: ' + songScore + ' | Combo Breaks: ' + songMisses + ' | Rating: ' + ratingName;
+			scoreTxt.text = 'Score: ' + songScore + ' | Combo Breaks: ' + songMisses + ' | Rating: ' + ratingName + ' | Accuracy: ?';
 		} else {
-			scoreTxt.text = 'Score: ' + songScore + ' | Combo Breaks: ' + songMisses + ' | Rating: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
+			scoreTxt.text = 'Score: ' + songScore + ' | Combo Breaks: ' + songMisses + ' | Rating: ' + ratingName + ' | Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' - ' + ratingFC;//peeps wanted no integer rating
 		}
 
 		if (FlxG.keys.justPressed.SEVEN && !endingSong && !inCutscene)

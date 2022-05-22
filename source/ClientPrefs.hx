@@ -15,6 +15,7 @@ class ClientPrefs {
 	public static var noteSplashes:Bool = true;
 	public static var lowQuality:Bool = false;
 	public static var framerate:Int = 60;
+	public static var cameraSpeed:Float = 2;
 	public static var cursing:Bool = true;
 	public static var violence:Bool = true;
 	public static var camZooms:Bool = true;
@@ -218,6 +219,7 @@ class ClientPrefs {
 		FlxG.save.data.maxOptimization = maxOptimization;
 		FlxG.save.data.moveCameraInNoteDirection = moveCameraInNoteDirection;
 		FlxG.save.data.iconBounce = iconBounce;
+		FlxG.save.data.cameraSpeed = cameraSpeed;
 
 		FlxG.save.flush();
 
@@ -363,6 +365,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.iconBounce != null) {
 			iconBounce = FlxG.save.data.iconBounce;
+		}
+		if(FlxG.save.data.cameraSpeed != null) {
+			cameraSpeed = FlxG.save.data.cameraSpeed;
 		}
 
 		var save:FlxSave = new FlxSave();
