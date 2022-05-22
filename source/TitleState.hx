@@ -669,9 +669,9 @@ class TitleState extends MusicBeatState
 			switch (curBeat)
 			{
 				case 1:
-					FlxG.sound.music.stop();
+					// FlxG.sound.music.stop();
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-					FlxG.sound.music.fadeIn(2, 0, 0.7);
+					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
 					#if PSYCH_WATERMARKS
 					createCoolText(['Ghosted Engine by'], 15);

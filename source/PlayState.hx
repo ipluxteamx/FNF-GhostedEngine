@@ -249,6 +249,8 @@ class PlayState extends MusicBeatState
 
 	public var watermarkTxt:FlxText;
 
+	public var counters:FlxText;
+
 	public var scoreTxt:FlxText;
 	public var scoreBarBG:AttachedSprite;
 
@@ -298,7 +300,7 @@ class PlayState extends MusicBeatState
 	private var keysArray:Array<Array<Dynamic>>;
 
 	// smooth healthbar lmao
-	var fakeHealth:Float = 1;
+	// var fakeHealth:Float = 1;
 
 	override public function create()
 	{
@@ -930,7 +932,7 @@ class PlayState extends MusicBeatState
 			'songPercent', 0, 1, true);
 		timeBar.scrollFactor.set();
 		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
-		timeBar.numDivisions = 400; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
+		timeBar.numDivisions = 200; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		timeBar.visible = showTime;
 		timeBar.alpha = 0.5;
 		add(timeBar);
@@ -1035,13 +1037,19 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'fakeHealth', 0, 2);
+			'health', 0, 2);
 		healthBar.scrollFactor.set();
 		// healthBar
 		healthBar.visible = !ClientPrefs.hideHud;
 		healthBar.alpha = ClientPrefs.healthBarAlpha;
 		healthBar.numDivisions = healthBar.barWidth;
 		healthBarBG.sprTracker = healthBar;
+
+		counters = new FlxText(-24, healthBar.y - 32, FlxG.width, "", 24);
+		counters.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		counters.scrollFactor.set();
+		counters.borderSize = 1.5;
+		counters.visible = !ClientPrefs.hideHud;
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
@@ -1068,6 +1076,7 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 		add(iconP1);
 		add(iconP2);
+		add(counters);
 
 		var storyDifficultyTxt:String = ""; //eh
 		storyDifficultyTxt = CoolUtil.difficulties[storyDifficulty];
@@ -1113,6 +1122,7 @@ class PlayState extends MusicBeatState
 		opponentLaneUnderlay.cameras = [camHUD];
 		doof.cameras = [camHUD];
 		watermarkTxt.cameras = [camHUD];
+		counters.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -2599,13 +2609,15 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		fakeHealth = FlxMath.lerp(fakeHealth, health, CoolUtil.boundTo(elapsed * 20, 0, 1));
+		// fakeHealth = FlxMath.lerp(fakeHealth, health, CoolUtil.boundTo(elapsed * 10, 0, 1));
 
 		if(ratingName == '?') {
-			scoreTxt.text = 'Score: ' + songScore + ' | Combo Breaks: ' + songMisses + ' | Rating: ' + ratingName + ' | Accuracy: ?';
+			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' | Accuracy: ?';
 		} else {
-			scoreTxt.text = 'Score: ' + songScore + ' | Combo Breaks: ' + songMisses + ' | Rating: ' + ratingName + ' | Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' - ' + ratingFC;//peeps wanted no integer rating
+			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' | Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' - ' + ratingFC;//peeps wanted no integer rating
 		}
+
+		counters.text = 'Sicks: ' + sicks + '\nGoods: ' + goods + '\nBads: ' + bads + '\nShits: ' + shits;
 
 		if (FlxG.keys.justPressed.SEVEN && !endingSong && !inCutscene)
 		{

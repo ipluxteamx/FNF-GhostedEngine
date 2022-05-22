@@ -2007,6 +2007,14 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "roundDecimal", function(val:Float, precision:Int) {
 			return FlxMath.roundDecimal(val, precision);
 		});
+		Lua_helper.add_callback(lua, "boundTo", CoolUtil.boundTo);
+		Lua_helper.add_callback(lua, "dominantColor", function(obj:String) {
+			var sprite = getObjectDirectly(obj);
+			if (sprite != null && (sprite is FlxSprite)) {
+				return CoolUtil.dominantColor(sprite);
+			}
+			return 0xff000000;
+		});
 		Lua_helper.add_callback(lua, "wrap", function(v:Int, mi:Int, ma:Int) {
 			return FlxMath.wrap(v, mi, ma);
 		});
