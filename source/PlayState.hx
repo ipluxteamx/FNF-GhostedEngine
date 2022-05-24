@@ -80,7 +80,7 @@ class PlayState extends MusicBeatState
 		['Nice', 0.7], //69%
 		['Good', 0.8], //From 70% to 79%
 		['Great', 0.9], //From 80% to 89%
-		['Sick!', 0.95], //From 90% to 99%
+		['Sick!', 0.975], //From 90% to 99%
 		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
 	];
 	
