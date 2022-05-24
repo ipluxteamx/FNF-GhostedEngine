@@ -2079,13 +2079,12 @@ class ChartingState extends MusicBeatState
  			audioBuffers[1] = AudioBuffer.fromFile(Paths.modFolders('songs/' + currentSongName + '/Voices.wav'));
  		}
  		#end
- 		else { #end
+ 		else {
 			var leVocals:String = Paths.getPath(currentSongName + '/Voices.' + Paths.SOUND_EXT, SOUND, 'songs');
 			if (OpenFlAssets.exists(leVocals)) { //Vanilla voices
 				audioBuffers[1] = AudioBuffer.fromFile('./' + leVocals.substr(6));
 				//trace('Voices found, LETS FUCKING GOOOO');
 			}
-		#if MODS_ALLOWED
 		}
 		#end
 	}

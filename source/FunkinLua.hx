@@ -53,8 +53,8 @@ import Discord;
 using StringTools;
 
 class FunkinLua {
-	// public static var Function_Stop = 1;
-	// public static var Function_Continue = 0;
+	public static var Function_Stop = 1;
+	public static var Function_Continue = 0;
 
 	#if LUA_ALLOWED
 	public var lua:State = null;
@@ -91,8 +91,8 @@ class FunkinLua {
 		#end
 
 		// Lua shit
-		set('Function_Stop', 1);
-		set('Function_Continue', 0);
+		set('Function_Stop', Function_Stop);
+		set('Function_Continue', Function_Continue);
 		set('luaDebugMode', false);
 		set('luaDeprecatedWarnings', true);
 		set('inChartEditor', false);
@@ -791,7 +791,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "boundTo", function(val:Float, mi:Float, ma:Float) {
 			return CoolUtil.boundTo(val, mi, ma);
 		});
-		Lua_helper.add_callback(lua, "readFromFile", function(path:String) {
+		Lua_helper.add_callback(lua, "readFromFile", function(file:String) {
 			CoolUtil.coolTextFile(file);
 		});
 		Lua_helper.add_callback(lua, "triggerEvent", function(name:String, arg1:Dynamic, arg2:Dynamic) {
