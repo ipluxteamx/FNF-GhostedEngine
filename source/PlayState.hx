@@ -3054,7 +3054,7 @@ class PlayState extends MusicBeatState
 		persistentUpdate = false;
 		paused = true;
 		cancelMusicFadeTween();
-		mirrorMode = !mirrorMode;
+		mirrorMode = false;
 		MusicBeatState.switchState(new ChartingState());
 		chartingMode = true;
 
@@ -3503,28 +3503,12 @@ class PlayState extends MusicBeatState
 	}
 
 	var cameraTwn:FlxTween;
-	public function moveCamera(isDad:Bool, ?direction:String = null) {
-		if (!canCameraMove) return;
-		if (ClientPrefs.moveCameraInNoteDirection && direction == null) return;
-		var noteHitX:Float = 0;
-		var noteHitY:Float = 0;
-		if (ClientPrefs.moveCameraInNoteDirection) {
-			switch (direction) {
-				case 'singUP':
-					noteHitY -= 40;
-				case 'singDOWN':
-					noteHitY += 40;
-				case 'singLEFT':
-					noteHitX -= 40;
-				case 'singRIGHT':
-					noteHitX += 40;
-			}
-		}
+	public function moveCamera(isDad:Bool) {
 		if(isDad)
 		{
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-			camFollow.x += dad.cameraPosition[0] + noteHitX;
-			camFollow.y += dad.cameraPosition[1] + noteHitY;
+			camFollow.x += dad.cameraPosition[0];
+			camFollow.y += dad.cameraPosition[1];
 			tweenCamIn();
 		}
 		else
@@ -3541,8 +3525,8 @@ class PlayState extends MusicBeatState
 					camFollow.x = boyfriend.getMidpoint().x - 200;
 					camFollow.y = boyfriend.getMidpoint().y - 200;
 			}
-			camFollow.x -= boyfriend.cameraPosition[0] + noteHitX;
-			camFollow.y += boyfriend.cameraPosition[1] + noteHitY;
+			camFollow.x -= boyfriend.cameraPosition[0];
+			camFollow.y += boyfriend.cameraPosition[1];
 			tweenCamIn();
 
 			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
@@ -4398,18 +4382,6 @@ class PlayState extends MusicBeatState
 			char.holdTimer = 0;
 		}
 
-		var animToPlay:String = 'sing' + Note.keysShit.get(mania).get('anims')[note.noteData];
-
-		if(note.noteType == 'GF Sing') {
-			gf.playAnim(animToPlay, true);
-			gf.holdTimer = 0;
-		} else {
-			dad.playAnim(animToPlay, true);
-			dad.holdTimer = 0;
-		}
-		if (ClientPrefs.moveCameraInNoteDirection)
-			moveCamera(true, animToPlay);
-
 		if (SONG.needsVoices)
 			vocals.volume = 1;
 
@@ -4531,7 +4503,7 @@ class PlayState extends MusicBeatState
 				});
 			}
 
-			var animToPlay:String = 'sing' + Note.keysShit.get(mania).get('anims')[note.noteData];
+			/*var animToPlay:String = 'sing' + Note.keysShit.get(mania).get('anims')[note.noteData];
 
 			if(note.noteType == 'GF Sing') {
 				gf.playAnim(animToPlay, true);
@@ -4541,7 +4513,7 @@ class PlayState extends MusicBeatState
 				boyfriend.holdTimer = 0;
 			}
 			if (ClientPrefs.moveCameraInNoteDirection)
-				moveCamera(true, animToPlay);
+				moveCamera(true, animToPlay);*/
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;
