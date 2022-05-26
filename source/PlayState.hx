@@ -912,13 +912,13 @@ class PlayState extends MusicBeatState
 		timeTxt.visible = showTime;
 		if(ClientPrefs.downScroll) timeTxt.y = FlxG.height - 44;
 
-		var songTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 34, 400, "", 20);
+		var songTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 34, 400, "", 16);
 		songTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		songTxt.scrollFactor.set();
 		songTxt.alpha = 0;
 		songTxt.borderSize = 2;
 		songTxt.visible = showTime;
-		if(ClientPrefs.downScroll) timeTxt.y = FlxG.height - 24;
+		if(ClientPrefs.downScroll) songTxt.y = timeTxt.y - 24;
 		songTxt.text = SONG.song;
 
 		updateTime = showTime;
@@ -945,14 +945,15 @@ class PlayState extends MusicBeatState
 		timeBar.alpha = 0.5;
 		add(timeBar);
 		add(timeTxt);
+		add(songTxt);
 		timeBarBG.sprTracker = timeBar;
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
 		add(grpNoteSplashes);
 
-		timeTxt.size = 24;
-		timeTxt.y += 3;
+		//timeTxt.size = 24;
+		//timeTxt.y += 3;
 
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
 		grpNoteSplashes.add(splash);
